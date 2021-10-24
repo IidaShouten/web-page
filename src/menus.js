@@ -4,7 +4,6 @@ async function callApi(){
 
     const res = await fetch(url);
     const list = await res.json();
-    console.log(list)
     var sakana = [];
     var dango = [];
     var uokasi = [];
@@ -13,6 +12,7 @@ async function callApi(){
     var neriesa = [];
     var alive = [];
     var ebi = [];
+    var sabiki = [];
     list.forEach(function(e){
         const url = e.url!="" ? e.url : e.img_url
         const menu = `
@@ -52,6 +52,9 @@ async function callApi(){
         else if (e.category=="エビ"){
             ebi.push(menu)
         }
+        else if (e.category=="サビキ"){
+            sabiki.push(menu)
+        }
         else{
             other.push(menu)
         }
@@ -66,6 +69,7 @@ async function callApi(){
     document.getElementById('練餌海道').innerHTML =  neriesa.join("")
     document.getElementById('その他').innerHTML =  other.join("")
     document.getElementById('エビ').innerHTML =  ebi.join("")
+    document.getElementById('サビキ').innerHTML =  sabiki.join("")
 };
 
 
