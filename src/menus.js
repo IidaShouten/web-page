@@ -17,14 +17,14 @@ async function callApi(){
         const url = e.url!="" ? e.url : e.img_url
         const menu = `
         <div class="col-lg-3  col-md-4 col-sm-6 col-xs-6">
-            <a class="content-box" href=`+url+`>
+            <a class="content-box" href=${url}>
                 <div class="content-box-image">
-                    <img src=`+e.img_url+`></img>
+                    <img src=${e.img_url}></img>
                 </div>
             </a>
-            <h3 class="content-box-title font-serif align-center">`+e.name+`</h3>
-            <h4 class="content-box-title font-serif align-center">`+e.price+`</h4>
-            <h4 class="content-box-title font-serif align-center">在庫 `+e.stock+`</h4>
+            <h3 class="content-box-title font-serif align-center">${e.name}</h3>
+            <h4 class="content-box-title font-serif align-center">${e.price}</h4>
+            <h4 class="content-box-title font-serif align-center">在庫 ${e.stock}</h4>
         </div>`
 
         

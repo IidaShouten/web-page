@@ -23,6 +23,19 @@ iframe {
   border: 0;
 }
 
+dt {
+  font-size: medium;
+  border-bottom: 1px solid #ccc;
+  float: left;
+  padding: 10px 5px;
+}
+dd {
+  font-size: medium;
+  border-bottom: 1px solid #ccc;
+  margin-left: 100px;
+  padding: 10px 5px;
+}
+
 .align-center {
   text-align: center;
 }
@@ -929,6 +942,11 @@ blockquote {
 
 .rotate {
   text-shadow: none !important;
+}
+
+.news-box {
+  overflow: auto;
+  height: 250px;
 }
 
 .module-title {
