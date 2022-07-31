@@ -13,6 +13,7 @@ async function callApi(){
     var alive = [];
     var ebi = [];
     var sabiki = [];
+    var honda = [];
     list.forEach(function(e){
         const url = e.url!="" ? e.url : e.img_url
         const menu = `
@@ -55,6 +56,11 @@ async function callApi(){
         else if (e.category=="サビキ"){
             sabiki.push(menu)
         }
+        
+        else if (e.category=="本多商店"){
+            honda.push(menu)
+        }
+
         else{
             other.push(menu)
         }
@@ -70,6 +76,7 @@ async function callApi(){
     document.getElementById('その他').innerHTML =  other.join("")
     document.getElementById('エビ').innerHTML =  ebi.join("")
     document.getElementById('サビキ').innerHTML =  sabiki.join("")
+    document.getElementById('本多商店').innerHTML = honda.join("")
 };
 
 
