@@ -82,7 +82,7 @@ async function callApi(){
     document.getElementById('エビ').innerHTML =  ebi.join("")
     document.getElementById('サビキ').innerHTML =  sabiki.join("")
     document.getElementById('本多商店').innerHTML = honda.join("")
-    document.getElementById('魚餌研究所　福吉').innerHTML = honda.join("")
+    document.getElementById('魚餌研究所　福吉').innerHTML = fukuyoshi.join("")
 };
 
 
