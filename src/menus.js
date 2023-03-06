@@ -14,6 +14,7 @@ async function callApi(){
     var ebi = [];
     var sabiki = [];
     var honda = [];
+    var fukuyoshi = [];
     list.forEach(function(e){
         const url = e.url!="" ? e.url : e.img_url
         const menu = `
@@ -61,6 +62,10 @@ async function callApi(){
             honda.push(menu)
         }
 
+        else if (e.category=="福吉"){
+            fukuyoshi.push(menu)
+        }
+
         else{
             other.push(menu)
         }
@@ -77,6 +82,7 @@ async function callApi(){
     document.getElementById('エビ').innerHTML =  ebi.join("")
     document.getElementById('サビキ').innerHTML =  sabiki.join("")
     document.getElementById('本多商店').innerHTML = honda.join("")
+    document.getElementById('魚餌研究所　福吉').innerHTML = honda.join("")
 };
 
 
