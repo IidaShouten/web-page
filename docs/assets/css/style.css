@@ -3007,3 +3007,103 @@ Google map
         width: 100%;
     }
 }
+
+/* ドロップダウンメニューのスタイル改良 */
+.dropdown-menu.custom-menu {
+    padding: 10px;
+    max-height: 300px; /* 高さを制限してスクロール可能に */
+    overflow-y: auto;
+    font-size: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* 各リスト項目の間隔 */
+.dropdown-menu.custom-menu li {
+    margin-bottom: 8px;
+}
+
+/* リンクのスタイル調整 */
+.dropdown-menu.custom-menu li a {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ホバー時の視認性向上 */
+.dropdown-menu.custom-menu li a:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    justify-items: center; /* カードを中央揃えに */
+    padding: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* 最低2列になるように制限 */
+@media (max-width: 400px) {
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.product-card {
+    width: 100%;
+    max-width: 260px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+}
+
+.product-name {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0.75rem 0 0.25rem;
+    text-align: center;
+    color: #333;
+}
+
+.product-price {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0.25rem 0;
+    text-align: center;
+    color: #e6002d;
+}
+
+.product-stock {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin: 0 0 0.75rem;
+    text-align: center;
+    color: #555;
+}
