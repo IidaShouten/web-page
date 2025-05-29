@@ -1,182 +1,411 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--  
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="icon" sizes="32x32" href="/icon.png" type="image/png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--
     Document Title
     =============================================
     -->
-    <title>みうらの釣りえさ屋</title>
-    <!--  
+        <title>みうらの釣りえさ屋</title>
+        <!--
     Favicons
     =============================================
     -->
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
-   
-    <!-- Default stylesheets-->
-    <link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Template specific stylesheets-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Volkhov:400i" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-    <link href="assets/lib/animate.css/animate.css" rel="stylesheet">
-    <link href="assets/lib/components-font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/lib/et-line-font/et-line-font.css" rel="stylesheet">
-    <link href="assets/lib/flexslider/flexslider.css" rel="stylesheet">
-    <link href="assets/lib/owl.carousel/dist/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="assets/lib/owl.carousel/dist/assets/owl.theme.default.min.css" rel="stylesheet"><ul class="list-group" style="max-width: 400px;">
-    </ul>
-    <link href="assets/lib/magnific-popup/dist/magnific-popup.css" rel="stylesheet">
-    <link href="assets/lib/simple-text-rotator/simpletextrotator.css" rel="stylesheet">
-    <!-- Main stylesheet and color file-->
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
-  </head>
-  <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
-    <main>
-      <div class="page-loader">
-        <div class="loader"></div>
-      </div>
-      <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="index.html">みうらの釣りえさ屋</a>
-          </div>
-          <div class="collapse navbar-collapse" id="custom-collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <div class="dropdown">
-                <span>
-                  <button  class="h5"><a class="section-scroll" href="#shop-detail"><b>店舗詳細</b></a></button>
-                </span>
-                <span>
-                  <button class="dropdown-toggle h5" data-toggle="dropdown"><b>カテゴリ別えさ一覧</b></button>
-                  <ul class="dropdown-menu">
-                    <li><a class="section-scroll h5" href=#ダンゴ><b>ダンゴ</b></a></li>
-                    <li><a class="section-scroll h5" href=#オキアミ><b>オキアミ</b></a></li>
-                    <li><a class="section-scroll h5" href=#魚><b>魚</b></a></li>
-                    <li><a class="section-scroll h5" href=#エビ><b>エビ</b></a></li>
-                    <li><a class="section-scroll h5" href=#サビキ><b>サビキ</b></a></li>
-                    <li><a class="section-scroll h5" href=#魚かし><b>魚かし</b></a></li>
-                    <li><a class="section-scroll h5" href=#練餌海道><b>練餌海道</b></a></li>
-                    <li><a class="section-scroll h5" href=#本多商店><b>本多商店</b></a></li>
-                    <li><a class="section-scroll h5" href=#福吉><b>魚餌研究所　福吉</b></a></li>
-                    <li><a class="section-scroll h5" href=#活エサ><b>活エサ</b></a></li>
-                    <li><a class="section-scroll h5" href=#その他><b>その他</b></a></li>
-                  </ul>
-                </span>
-                <span>
-                  <button class="h5"><a class="section-scroll" href="#other-link"><b>外部リンク</b></a></button>
-                </span>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <section class="bg-dark-90 showcase-page-header module parallax-bg" data-src="assets/img/kaiou-img.jpg">
-        <div class="titan-caption">
-          <div class="caption-content">
-            <div class="font-alt mb-30 titan-title-size-4">価格で勝負の釣りえさ専門店</div>
-            <div class="font-alt mb-40 titan-title-size-3"><b>100</b>種類以上取扱い</div>
-            <div class="font-alt mb-40 titan-title-size-3">釣り堀エサなんでも揃います！</div>
-            <a class="section-scroll btn btn-border-w btn-round mb-30 titan-title-size-2" href="#demos">えさ一覧を見る</a>
-          </div>
-        </div>
-      </section>
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff" />
 
-      <div class="container" id="shop-detail">
-        <div class="row">
-          <div class="col-md-6 col-xs-12 col-xl-6 pt-50">
-              <h4>営業時間: 午前5時30分〜午前7時30分</h4>
-              <h4>火曜日定休日</h4>
-              <h4>住所: 神奈川県三浦市三崎5丁目12-3 THE OCEAN VIEW miura 2階</h4>
-              <div class="align-center">
-                <img src="assets/image/S__49856551.jpg" width="300" height="300"></img>
-              </div>
-              
-              
-          </div>
-          <div class="col-md-6 col-xs-12 col-xl-6 align-center pt-50">  
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1006.5224583063144!2d139.61570868340849!3d35.14242616862286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60183c843d36f3cd%3A0xccba1e306a06af74!2sTHE%20OCEAN%20VIEW%20miura!5e0!3m2!1sja!2sjp!4v1634915549117!5m2!1sja!2sjp" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-              <h4>三崎港バス停から徒歩4分</h4>
-              <h4>うらりマルシェから徒歩1分</h4>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <h3><b>新着情報</b></h3>
-          <div class="news-box fa-border" id=news></div>
-        </iframe>
-      </div>
-      
-      <div class="main showcase-page">
-        <section class="module-medium" id="demos">
-          <div class="container">
-            <h2><b>ダンゴ</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="ダンゴ"></div>
-            <h2><b>オキアミ</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="オキアミ"></div>
-            <h2><b>魚</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="魚"></div>
-            <h2><b>エビ</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="エビ"></div>
-            <h2><b>サビキ</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="サビキ"></div>
-            <h2><b>魚かし</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="魚かし"></div>
-            <h2><b>練餌海道</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="練餌海道"></div>
-            <h2><b>本多商店</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="本多商店"></div>
-            <h2><b>魚餌研究所　福吉</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="福吉"></div>
-            <h2><b>活エサ</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="活エサ"></div>
-            <h2><b>その他</b></h2>
-            <div class="row multi-columns-row row-eq-height" id="その他"></div>
-          </div>
-        </section>
-      </div>
-
-        <section class="module-extra-small bg-dark">
-          <div class="container" id="other-link">
-            <div class="row">
-              <div class="col-sm-6 col-md-8 col-lg-9">
-                <div class="callout-text font-alt">
-                  <h4>その他関連サイト</h4>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="callout-btn-box"><a class="btn btn-border-w btn-circle" href="http://www.miura-kaiou.com/">みうら海王ホームページへ</a></div>
-              </div>
+        <!-- Default stylesheets-->
+        <link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Template specific stylesheets-->
+        <link
+            href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700"
+            rel="stylesheet"
+        />
+        <link href="https://fonts.googleapis.com/css?family=Volkhov:400i" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800"
+            rel="stylesheet"
+        />
+        <link href="assets/lib/animate.css/animate.css" rel="stylesheet" />
+        <link href="assets/lib/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="assets/lib/et-line-font/et-line-font.css" rel="stylesheet" />
+        <link href="assets/lib/flexslider/flexslider.css" rel="stylesheet" />
+        <link href="assets/lib/owl.carousel/dist/assets/owl.carousel.min.css" rel="stylesheet" />
+        <link
+            href="assets/lib/owl.carousel/dist/assets/owl.theme.default.min.css"
+            rel="stylesheet"
+        />
+        <ul class="list-group" style="max-width: 400px"></ul>
+        <link href="assets/lib/magnific-popup/dist/magnific-popup.css" rel="stylesheet" />
+        <link href="assets/lib/simple-text-rotator/simpletextrotator.css" rel="stylesheet" />
+        <!-- Main stylesheet and color file-->
+        <link href="assets/css/style.css" rel="stylesheet" />
+        <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet" />
+    </head>
+    <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+        <main>
+            <div class="page-loader">
+                <div class="loader"></div>
             </div>
-          </div>
-        </section>
-      </div>
+            <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button
+                            class="navbar-toggle"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#custom-collapse"
+                        >
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span><span class="icon-bar"></span
+                            ><span class="icon-bar"></span></button
+                        ><a
+                            class="navbar-brand"
+                            href="index.html"
+                            style="display: flex; align-items: center; height: 100%"
+                        >
+                            <img
+                                src="assets/image/bnr_02.avif"
+                                alt="みうらの釣りえさ屋ロゴ"
+                                style="height: 40px; display: block"
+                            />
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="custom-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a class="section-scroll h5" href="#shop-detail"><b>店舗詳細</b></a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle h5" data-toggle="dropdown" href="#">
+                                    <b>カテゴリ別えさ一覧</b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="section-scroll h5" href="#ダンゴ"
+                                            ><b>ダンゴ</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#オキアミ"
+                                            ><b>オキアミ</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#魚"><b>魚</b></a>
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#エビ"><b>エビ</b></a>
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#サビキ"
+                                            ><b>サビキ</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#魚かし"
+                                            ><b>魚かし</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#練餌海道"
+                                            ><b>練餌海道</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#本多商店"
+                                            ><b>本多商店</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#福吉"
+                                            ><b>魚餌研究所 福吉</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#活エサ"
+                                            ><b>活エサ</b></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a class="section-scroll h5" href="#その他"
+                                            ><b>その他</b></a
+                                        >
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="section-scroll h5" href="#other-link"
+                                    ><b>外部リンク</b></a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <section
+                class="bg-dark-30 showcase-page-header module parallax-bg"
+                style="
+                    background-image: url('assets/image/ocean.png');
+                    background-size: cover;
+                    background-position: center;
+                "
+            >
+                >
+                <div class="titan-caption">
+                    <div class="caption-content">
+                        <div class="font-alt mb-30 titan-title-size-4">
+                            価格で勝負の釣りえさ専門店
+                        </div>
+                        <div class="font-alt mb-40 titan-title-size-3">
+                            <b>100</b>種類以上取扱い
+                        </div>
+                        <div class="font-alt mb-40 titan-title-size-3">
+                            釣り堀エサなんでも揃います！
+                        </div>
+                        <a
+                            class="section-scroll btn btn-border-w btn-round mb-30 titan-title-size-2"
+                            href="#demos"
+                            >えさ一覧を見る</a
+                        >
+                    </div>
+                </div>
+            </section>
 
-      <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
-    </main>
-    <!--  
+            <!-- ───── 店舗情報を読みやすく再構成（インライン CSS で完結） ───── -->
+            <div
+                class="container"
+                id="shop-detail"
+                style="
+                    max-width: 960px;
+                    padding: 2.5rem 1rem;
+                    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                        Helvetica, Arial, sans-serif;
+                "
+            >
+                <h2
+                    style="
+                        font-size: 1.7rem;
+                        font-weight: 700;
+                        text-align: center;
+                        margin-bottom: 2rem;
+                    "
+                >
+                    店舗情報
+                </h2>
+
+                <div class="row" style="display: flex; flex-wrap: wrap; gap: 2rem">
+                    <!-- 左カラム : 基本情報 + 外観写真 -->
+                    <div class="col-xs-12 col-md-6" style="flex: 1 1 300px; min-width: 280px">
+                        <!-- ─ 店舗基本情報（<ul><li> だけで構成） ─ -->
+                        <ul
+                            style="
+                                list-style: none;
+                                margin: 0;
+                                padding: 0;
+                                font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
+                                    'Segoe UI', Helvetica, Arial, sans-serif;
+                                font-size: 1.25rem;
+                                line-height: 1.8;
+                            "
+                        >
+                            <!-- 営業時間 -->
+                            <li style="padding: 1rem 0; border-bottom: 1px solid #d0d0d0">
+                                <p style="margin: 0 0 0.25rem; font-weight: 300">営業時間</p>
+                                <p style="margin: 0; font-weight: 700">
+                                    午前&nbsp;5:30&nbsp;-&nbsp;午前&nbsp;7:00
+                                </p>
+                            </li>
+
+                            <!-- 定休日 -->
+                            <li style="padding: 1rem 0; border-bottom: 1px solid #d0d0d0">
+                                <p style="margin: 0 0 0.25rem; font-weight: 300">定休日</p>
+                                <p style="margin: 0; font-weight: 700">
+                                    火曜日<br />
+                                    ※火曜日が祝祭日の場合は営業<br />
+                                    ※
+                                    <a
+                                        href="https://www.miura-kaiou.com/news1"
+                                        style="
+                                            text-decoration-line: underline;
+                                            text-decoration-style: dotted;
+                                        "
+                                        >みうら海王</a
+                                    >
+                                    の営業スケジュールに準じて休業する場合があります
+                                </p>
+                            </li>
+
+                            <!-- 住所（区切り線なし・改行保持） -->
+                            <li style="padding: 1rem 0">
+                                <p style="margin: 0 0 0.25rem; font-weight: 300">住所</p>
+                                <p style="margin: 0; font-weight: 700">
+                                    <a
+                                        href="https://maps.app.goo.gl/9po7NzLxAaTd9zu56"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style="
+                                            text-decoration-line: underline;
+                                            text-decoration-style: dotted;
+                                        "
+                                    >
+                                        神奈川県三浦市三崎5丁目12-3
+                                        THE&nbsp;OCEAN&nbsp;VIEW&nbsp;miura&nbsp;2階
+                                    </a>
+                                </p>
+                            </li>
+                        </ul>
+
+                        <!-- Google Map -->
+                        <div
+                            style="
+                                width: 100%;
+                                height: 300px;
+                                border-radius: 10px;
+                                overflow: hidden;
+                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+                            "
+                        >
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52176.80898542329!2d139.5994645215511!3d35.1802923245745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60183ddd2e562729%3A0xa50ceaf9727acfdd!2z44G_44GG44KJ44Gu6Yej44KK44GI44GV5bGL!5e0!3m2!1sja!2sjp!4v1748531961961!5m2!1sja!2sjp"
+                                width="600"
+                                height="450"
+                                style="border: 0"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                            ></iframe>
+                        </div>
+
+                        <!-- アクセス -->
+                        <ul
+                            style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 1.5rem 0 0;
+                                font-size: 1.25rem;
+                                font-weight: 600;
+                                line-height: 1.8;
+                                text-align: center;
+                            "
+                        >
+                            <li>三崎港バス停から徒歩 4 分</li>
+                            <li>うらりマルシェから徒歩 1 分</li>
+                        </ul>
+                    </div>
+
+                    <!-- 右カラム : 地図 & アクセス案内 -->
+                    <div class="col-xs-12 col-md-6" style="flex: 1 1 300px; min-width: 280px">
+                        <!-- 外観写真 -->
+                        <figure style="text-align: center; margin: 2rem 0 0">
+                            <img
+                                src="assets/image/S__49856551.jpg"
+                                alt="店舗の外観写真"
+                                loading="lazy"
+                                style="
+                                    width: 100%;
+                                    max-width: 320px;
+                                    height: auto;
+                                    border-radius: 10px;
+                                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+                                "
+                            />
+                        </figure>
+                        <ul
+                            style="
+                                list-style: none;
+                                padding: 0;
+                                margin: 1.5rem 0 0;
+                                font-size: 1.25rem;
+                                font-weight: 600;
+                                line-height: 1.8;
+                                text-align: center;
+                            "
+                        >
+                            <li>※正面玄関及び建物間のスペースへの駐車停車はご遠慮ください。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <h3><b>新着情報</b></h3>
+                <div class="news-box fa-border" id="news"></div>
+            </div>
+            <div class="main showcase-page">
+                <section class="module-medium" id="demos">
+                    <div class="container">
+                        <h2><b>ダンゴ</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="ダンゴ"></div>
+                        <h2><b>オキアミ</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="オキアミ"></div>
+                        <h2><b>魚</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="魚"></div>
+                        <h2><b>エビ</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="エビ"></div>
+                        <h2><b>サビキ</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="サビキ"></div>
+                        <h2><b>魚かし</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="魚かし"></div>
+                        <h2><b>練餌海道</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="練餌海道"></div>
+                        <h2><b>本多商店</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="本多商店"></div>
+                        <h2><b>魚餌研究所　福吉</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="福吉"></div>
+                        <h2><b>活エサ</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="活エサ"></div>
+                        <h2><b>その他</b></h2>
+                        <div class="row multi-columns-row row-eq-height" id="その他"></div>
+                    </div>
+                </section>
+            </div>
+
+            <section class="module-extra-small bg-dark">
+                <div class="container" id="other-link">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-8 col-lg-9">
+                            <div class="callout-text font-alt">
+                                <h4>その他関連サイト</h4>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="callout-btn-box">
+                                <a
+                                    class="btn btn-border-w btn-circle"
+                                    href="http://www.miura-kaiou.com/"
+                                    >みうら海王ホームページへ</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="scroll-up">
+                <a href="#totop"><i class="fa fa-angle-double-up"></i></a>
+            </div>
+        </main>
+        <!--  
     JavaScripts
     =============================================
     -->
-    <script src="./src/news.js"></script>
-    <script src="./src/menus.js"></script>
-    <script src="assets/lib/jquery/dist/jquery.js"></script>
-    <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="assets/lib/wow/dist/wow.js"></script>
-    <script src="assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
-    <script src="assets/lib/isotope/dist/isotope.pkgd.js"></script>
-    <script src="assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
-    <script src="assets/lib/flexslider/jquery.flexslider.js"></script>
-    <script src="assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
-    <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
-    <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/main.js"></script>
-  </body>
+        <script src="./src/news.js"></script>
+        <script src="./src/menus.js"></script>
+        <script src="assets/lib/jquery/dist/jquery.js"></script>
+        <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="assets/lib/wow/dist/wow.js"></script>
+        <script src="assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
+        <script src="assets/lib/isotope/dist/isotope.pkgd.js"></script>
+        <script src="assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
+        <script src="assets/lib/flexslider/jquery.flexslider.js"></script>
+        <script src="assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
+        <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
+        <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
+        <script src="assets/js/plugins.js"></script>
+        <script src="assets/js/main.js"></script>
+    </body>
 </html>
