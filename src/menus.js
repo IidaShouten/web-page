@@ -1,6 +1,6 @@
-
-async function callApi(){
-    const url = 'https://script.google.com/macros/s/AKfycbyrCy6zydNo59xmisnkwkDsx4TIC6AY_LNhrzCpA-SZspYWe_cLwIWHEN0VmFnP5yls-w/exec'; // リクエスト先URL
+async function callApi() {
+    const url =
+        'https://script.google.com/macros/s/AKfycbyrCy6zydNo59xmisnkwkDsx4TIC6AY_LNhrzCpA-SZspYWe_cLwIWHEN0VmFnP5yls-w/exec'; // リクエスト先URL
 
     const res = await fetch(url);
     const list = await res.json();
@@ -15,8 +15,8 @@ async function callApi(){
     var sabiki = [];
     var honda = [];
     var fukuyoshi = [];
-    list.forEach(function(e){
-        const url = e.url!="" ? e.url : e.img_url
+    list.forEach(function (e) {
+        const url = e.url != '' ? e.url : e.img_url;
         const menu = `<article class="col-lg-3 col-md-4 col-sm-6 col-xs-6"
         itemscope itemtype="https://schema.org/Product"
         role="group" aria-label="${e.name}"
@@ -38,68 +38,52 @@ async function callApi(){
     </h4>
 
     <h4 style="font-family:'Noto Sans JP',sans-serif;font-weight:400;font-size:0.85rem;margin:0 0 0.75rem;text-align:center;color:#555;">
-    ${e.stock === "あり"
-        ? `在庫 ${e.stock}`
-        : '<span style="color:#c00;font-weight:600;">在庫切れ</span>'}
+    ${
+        e.stock === 'あり'
+            ? `在庫 ${e.stock}`
+            : '<span style="color:#c00;font-weight:600;">在庫切れ</span>'
+    }
     </h4>
 </a>
-</article>`
-        if (!e.hasOwnProperty('category')){
-            other.push(menu)
-        }
-        else if (e.category=="魚"){
-            sakana.push(menu)
-        }
-        else if (e.category=="魚かし"){
-            uokasi.push(menu)
-        }
-        else if (e.category=="ダンゴ"){
-            dango.push(menu)
-        }
-        else if (e.category=="オキアミ"){
-            okiami.push(menu)
-        }
-        else if (e.category=="練餌海道"){
-            neriesa.push(menu)
-        }
-        else if (e.category=="活エサ"){
-            alive.push(menu)
-        }
-        else if (e.category=="エビ"){
-            ebi.push(menu)
-        }
-        else if (e.category=="サビキ"){
-            sabiki.push(menu)
-        }
-        
-        else if (e.category=="本多商店"){
-            honda.push(menu)
-        }
-
-        else if (e.category=="福吉"){
-            fukuyoshi.push(menu)
-        }
-
-        else{
-            other.push(menu)
+</article>`;
+        if (!e.hasOwnProperty('category')) {
+            other.push(menu);
+        } else if (e.category == '魚') {
+            sakana.push(menu);
+        } else if (e.category == '魚かし') {
+            uokasi.push(menu);
+        } else if (e.category == 'ダンゴ') {
+            dango.push(menu);
+        } else if (e.category == 'オキアミ') {
+            okiami.push(menu);
+        } else if (e.category == '練餌海道') {
+            neriesa.push(menu);
+        } else if (e.category == '活エサ') {
+            alive.push(menu);
+        } else if (e.category == 'エビ') {
+            ebi.push(menu);
+        } else if (e.category == 'サビキ') {
+            sabiki.push(menu);
+        } else if (e.category == '本多商店') {
+            honda.push(menu);
+        } else if (e.category == '福吉') {
+            fukuyoshi.push(menu);
+        } else {
+            other.push(menu);
         }
     });
-        
-        
-    document.getElementById('魚').innerHTML =  sakana.join("")
-    document.getElementById('魚かし').innerHTML =  uokasi.join("")
-    document.getElementById('ダンゴ').innerHTML =  dango.join("")
-    document.getElementById('オキアミ').innerHTML =  okiami.join("")
-    document.getElementById('活エサ').innerHTML =  alive.join("")
-    document.getElementById('練餌海道').innerHTML =  neriesa.join("")
-    document.getElementById('その他').innerHTML =  other.join("")
-    document.getElementById('エビ').innerHTML =  ebi.join("")
-    document.getElementById('サビキ').innerHTML =  sabiki.join("")
-    document.getElementById('本多商店').innerHTML = honda.join("")
-    document.getElementById('福吉').innerHTML = fukuyoshi.join("")
-};
 
+    document.getElementById('魚').innerHTML = sakana.join('');
+    document.getElementById('魚かし').innerHTML = uokasi.join('');
+    document.getElementById('ダンゴ').innerHTML = dango.join('');
+    document.getElementById('オキアミ').innerHTML = okiami.join('');
+    document.getElementById('活エサ').innerHTML = alive.join('');
+    document.getElementById('練餌海道').innerHTML = neriesa.join('');
+    document.getElementById('その他').innerHTML = other.join('');
+    document.getElementById('エビ').innerHTML = ebi.join('');
+    document.getElementById('サビキ').innerHTML = sabiki.join('');
+    document.getElementById('本多商店').innerHTML = honda.join('');
+    document.getElementById('福吉').innerHTML = fukuyoshi.join('');
+}
 
 callApi();
-
-
