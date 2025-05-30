@@ -1316,8 +1316,10 @@ General Styles - Owlcarousel
 .navbar-custom .navbar-brand {
     letter-spacing: 4px;
     font-weight: 400;
-    font-size: 22px;
+    font-size: 15px;
     color: #fff;
+    align-items: center;
+    display: flex;
 }
 
 .navbar-custom .nav li > a {
@@ -2662,6 +2664,8 @@ Google map
 --------------------------------------------------------------*/
 .showcase-page .showcase-page-header {
     background-color: rgba(2, 2, 2, 0.7);
+    background-size: cover;
+    background-position: center center;
 }
 
 .showcase-page .content-box {

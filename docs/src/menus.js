@@ -24,7 +24,8 @@ async function callApi() {
         <a href="${url}" class="product-link">
             <img src="${e.img_url}?w=300"
                 srcset="${e.img_url}?w=300 1x, ${e.img_url}?w=600 2x"
-                alt="${e.name}" loading="lazy">
+                alt="${e.name}" loading="lazy"
+                style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block;">
             <h3 itemprop="name" class="product-name">${e.name}</h3>
             <h4 class="product-price">
                 <meta itemprop="priceCurrency" content="JPY">
