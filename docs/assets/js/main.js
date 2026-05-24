@@ -34,10 +34,12 @@
 
         $dropdowns.on('mouseenter.siteDropdown', function () {
             $(this).addClass('open');
+            $(this).find('.dropdown-toggle').attr('aria-expanded', 'true');
         });
 
         $dropdowns.on('mouseleave.siteDropdown', function () {
             $(this).removeClass('open');
+            $(this).find('.dropdown-toggle').attr('aria-expanded', 'false');
         });
     }
 
@@ -77,6 +79,33 @@
         updateNavbarState();
         bindDesktopDropdowns();
         bindSmoothScroll();
+
+        $(document).on('show.bs.dropdown hide.bs.dropdown', '.dropdown', function (event) {
+            $(this)
+                .find('.dropdown-toggle')
+                .attr('aria-expanded', event.type === 'show');
+        });
+
+        $(window).on('error', function (event) {
+            window.SiteRuntime.recordClientEvent('window_error', {
+                message: event.originalEvent && event.originalEvent.message,
+                source: event.originalEvent && event.originalEvent.filename,
+            });
+        });
+
+        $(window).on('unhandledrejection', function (event) {
+            const reason = event.originalEvent ? event.originalEvent.reason : event.reason;
+            window.SiteRuntime.recordClientEvent('unhandled_rejection', {
+                message: reason && reason.message ? reason.message : String(reason),
+            });
+        });
+
+        $('img').on('error', function () {
+            window.SiteRuntime.recordClientEvent('image_load_failed', {
+                src: $(this).attr('src') || '',
+                alt: $(this).attr('alt') || '',
+            });
+        });
 
         $(window).on('scroll', function () {
             updateScrollTopButton();

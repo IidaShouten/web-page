@@ -35,6 +35,13 @@
         <!-- Windows Tile -->
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="theme-color" content="#ffffff" />
+        <script src="./src/site-config.js"></script>
+        <script id="structured-data" type="application/ld+json"></script>
+        <script>
+            document.getElementById('structured-data').textContent = JSON.stringify(
+                window.SiteConfig.seo.localBusiness
+            );
+        </script>
 
         <!-- CSS -->
         <link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -52,7 +59,8 @@
         <link href="assets/css/site.css" rel="stylesheet" />
     </head>
     <body class="bait-shop-site" data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
-        <main>
+        <a class="skip-link" href="#main-content">本文へ移動</a>
+        <main id="main-content">
             <div class="page-loader">
                 <div class="loader"></div>
             </div>
@@ -68,11 +76,13 @@
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span><span class="icon-bar"></span
                             ><span class="icon-bar"></span></button
-                        ><a class="navbar-brand site-navbar__brand" href="index.html">
+                        ><a class="navbar-brand site-navbar__brand" href="index.html" aria-label="みうらの釣りえさ屋 トップページ">
                             <img
                                 src="assets/image/bnr_02.avif"
                                 alt="みうらの釣りえさ屋ロゴ"
                                 class="site-navbar__logo"
+                                loading="eager"
+                                decoding="async"
                             />
                         </a>
                     </div>
@@ -82,10 +92,16 @@
                                 <a class="section-scroll h5" href="#shop-detail"><b>店舗詳細</b></a>
                             </li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle h5" data-toggle="dropdown" href="#">
+                                <a
+                                    class="dropdown-toggle h5"
+                                    data-toggle="dropdown"
+                                    href="#"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                >
                                     <b>カテゴリ別えさ一覧</b>
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" id="category-nav">
                                     <li>
                                         <a class="section-scroll" href="#ダンゴ"><b>ダンゴ</b></a>
                                     </li>
@@ -235,6 +251,7 @@
                                 src="assets/image/S__49856551.jpg"
                                 alt="店舗の外観写真"
                                 loading="lazy"
+                                decoding="async"
                                 class="shop-photo__image"
                             />
                             </figure>
@@ -252,9 +269,10 @@
                         <span class="section-heading__kicker">News</span>
                         <h2 class="section-heading__title">新着情報</h2>
                     </div>
-                    <div class="news-box fa-border" id="news">
+                    <div class="news-box fa-border" id="news" aria-live="polite">
                         <p class="status-message">新着情報を読み込み中です。</p>
                     </div>
+                    <p class="meta-text" id="news-updated-at"></p>
                 </div>
             </section>
             <div class="main showcase-page">
@@ -264,28 +282,59 @@
                             <span class="section-heading__kicker">Products</span>
                             <h2 class="section-heading__title">カテゴリ別えさ一覧</h2>
                         </div>
-                        <h3 class="product-section__title"><b>ダンゴ</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="ダンゴ"></div>
-                        <h3 class="product-section__title"><b>オキアミ</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="オキアミ"></div>
-                        <h3 class="product-section__title"><b>魚</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="魚"></div>
-                        <h3 class="product-section__title"><b>エビ</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="エビ"></div>
-                        <h3 class="product-section__title"><b>サビキ</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="サビキ"></div>
-                        <h3 class="product-section__title"><b>魚かし</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="魚かし"></div>
-                        <h3 class="product-section__title"><b>練餌海道</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="練餌海道"></div>
-                        <h3 class="product-section__title"><b>本多商店</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="本多商店"></div>
-                        <h3 class="product-section__title"><b>魚餌研究所　福吉</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="福吉"></div>
-                        <h3 class="product-section__title"><b>活エサ</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="活エサ"></div>
-                        <h3 class="product-section__title"><b>その他</b></h3>
-                        <div class="row multi-columns-row row-eq-height" id="その他"></div>
+                        <section class="product-category-block" aria-labelledby="heading-ダンゴ">
+                            <h3 class="product-section__title" id="heading-ダンゴ"><b>ダンゴ</b></h3>
+                            <div class="row multi-columns-row row-eq-height" id="ダンゴ"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-オキアミ">
+                            <h3 class="product-section__title" id="heading-オキアミ">
+                                <b>オキアミ</b>
+                            </h3>
+                            <div class="row multi-columns-row row-eq-height" id="オキアミ"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-魚">
+                            <h3 class="product-section__title" id="heading-魚"><b>魚</b></h3>
+                            <div class="row multi-columns-row row-eq-height" id="魚"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-エビ">
+                            <h3 class="product-section__title" id="heading-エビ"><b>エビ</b></h3>
+                            <div class="row multi-columns-row row-eq-height" id="エビ"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-サビキ">
+                            <h3 class="product-section__title" id="heading-サビキ"><b>サビキ</b></h3>
+                            <div class="row multi-columns-row row-eq-height" id="サビキ"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-魚かし">
+                            <h3 class="product-section__title" id="heading-魚かし"><b>魚かし</b></h3>
+                            <div class="row multi-columns-row row-eq-height" id="魚かし"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-練餌海道">
+                            <h3 class="product-section__title" id="heading-練餌海道">
+                                <b>練餌海道</b>
+                            </h3>
+                            <div class="row multi-columns-row row-eq-height" id="練餌海道"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-本多商店">
+                            <h3 class="product-section__title" id="heading-本多商店">
+                                <b>本多商店</b>
+                            </h3>
+                            <div class="row multi-columns-row row-eq-height" id="本多商店"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-福吉">
+                            <h3 class="product-section__title" id="heading-福吉">
+                                <b>魚餌研究所 福吉</b>
+                            </h3>
+                            <div class="row multi-columns-row row-eq-height" id="福吉"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-活エサ">
+                            <h3 class="product-section__title" id="heading-活エサ"><b>活エサ</b></h3>
+                            <div class="row multi-columns-row row-eq-height" id="活エサ"></div>
+                        </section>
+                        <section class="product-category-block" aria-labelledby="heading-その他">
+                            <h3 class="product-section__title" id="heading-その他"><b>その他</b></h3>
+                            <div class="row multi-columns-row row-eq-height" id="その他"></div>
+                        </section>
+                        <p class="meta-text" id="menus-updated-at"></p>
                     </div>
                 </section>
             </div>
@@ -313,18 +362,26 @@
                 </div>
             </section>
 
+            <footer class="site-footer">
+                <div class="container">
+                    <p class="site-footer__copyright">
+                        &copy; 2026 みうらの釣りえさ屋 All Rights Reserved.
+                    </p>
+                </div>
+            </footer>
+
             <div class="scroll-up">
-                <a href="#totop"><i class="fa fa-angle-double-up"></i></a>
+                <a href="#totop" aria-label="ページ上部へ戻る"><i class="fa fa-angle-double-up"></i></a>
             </div>
         </main>
         <!--  
     JavaScripts
     =============================================
     -->
-        <script src="./src/news.js"></script>
-        <script src="./src/menus.js"></script>
         <script src="assets/lib/jquery/dist/jquery.js"></script>
         <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="assets/js/main.js"></script>
+        <script src="./src/news.js"></script>
+        <script src="./src/menus.js"></script>
     </body>
 </html>

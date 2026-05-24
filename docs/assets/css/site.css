@@ -6,6 +6,22 @@
     font: 400 15px/1.8 'Open Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
 }
 
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 12px;
+    z-index: 10000;
+    padding: 0.8rem 1.2rem;
+    border-radius: 999px;
+    background: #08161c;
+    color: #fff;
+}
+
+.skip-link:focus {
+    top: 12px;
+    color: #fff;
+}
+
 .bait-shop-site .font-alt,
 .bait-shop-site h1,
 .bait-shop-site h2,
@@ -232,14 +248,25 @@
 
 .status-message,
 .empty-message,
-.error-message {
+.error-message,
+.fallback-message {
     margin: 0;
     padding: 1rem 0;
     font-size: 1.5rem;
 }
 
+.fallback-message {
+    color: #79621f;
+}
+
 .error-message {
     color: #a13a3a;
+}
+
+.meta-text {
+    margin: 1rem 0 0;
+    color: #607174;
+    font-size: 1.2rem;
 }
 
 .product-section {
@@ -321,6 +348,30 @@
 .external-section {
     margin-top: 3rem;
     background: linear-gradient(135deg, #10232e 0%, #0a4451 100%);
+}
+
+.site-footer {
+    padding: 1.8rem 0 2.8rem;
+    background: #08161c;
+}
+
+.site-footer__copyright {
+    margin: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+}
+
+.not-found-card {
+    max-width: 720px;
+    margin: 4rem auto;
+    text-align: center;
+}
+
+.not-found-card__text {
+    margin: 1.2rem 0 0;
+    font-size: 1.6rem;
 }
 
 @media (max-width: 991px) {
