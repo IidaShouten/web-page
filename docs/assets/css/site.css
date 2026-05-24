@@ -1,0 +1,353 @@
+.bait-shop-site {
+    background:
+        radial-gradient(circle at top, rgba(44, 122, 123, 0.08), transparent 32%),
+        linear-gradient(180deg, #f6fbfa 0%, #ffffff 24%, #f4f6f5 100%);
+    color: #2f3133;
+    font: 400 15px/1.8 'Open Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+}
+
+.bait-shop-site .font-alt,
+.bait-shop-site h1,
+.bait-shop-site h2,
+.bait-shop-site h3,
+.bait-shop-site h4 {
+    font-family: 'Roboto Condensed', 'Hiragino Sans', sans-serif;
+    letter-spacing: 0.02em;
+}
+
+.site-navbar {
+    background: rgba(7, 26, 34, 0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-navbar__brand {
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+}
+
+.site-navbar__logo {
+    width: auto;
+    max-height: 34px;
+}
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    background-image: url('../image/ocean.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 78vh;
+}
+
+.hero-section__backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(7, 30, 43, 0.86), rgba(5, 94, 109, 0.56)),
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 35%);
+}
+
+.hero-section__caption {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-section__eyebrow {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-section__title {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: clamp(3.2rem, 7vw, 5.8rem);
+    line-height: 0.98;
+}
+
+.hero-section__subtitle {
+    margin-bottom: 1rem;
+}
+
+.hero-section__lead {
+    max-width: 42rem;
+    margin: 0 auto 2rem;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1.7rem;
+}
+
+.hero-section__cta {
+    min-width: 210px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.section-heading {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.section-heading--left {
+    text-align: left;
+}
+
+.section-heading__kicker {
+    display: inline-block;
+    margin-bottom: 0.8rem;
+    color: #13828b;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.section-heading__title {
+    margin: 0;
+    color: #142328;
+    font-size: clamp(2.8rem, 3vw, 3.8rem);
+    font-weight: 700;
+}
+
+.shop-section {
+    padding: 5rem 0 2rem;
+}
+
+.shop-section__container {
+    max-width: 1040px;
+}
+
+.shop-section__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.4rem;
+}
+
+.shop-card {
+    height: 100%;
+    padding: 2.4rem;
+    border: 1px solid rgba(19, 130, 139, 0.12);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 24px 60px rgba(20, 35, 40, 0.08);
+}
+
+.shop-info-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.shop-info-list__item {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid #dbe5e5;
+}
+
+.shop-info-list__item:last-child {
+    border-bottom: 0;
+}
+
+.shop-info-list__label {
+    margin: 0 0 0.4rem;
+    color: #6d8083;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.shop-info-list__value {
+    margin: 0;
+    color: #142328;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.7;
+}
+
+.text-link {
+    color: #0d6a72;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+}
+
+.shop-access {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+}
+
+.shop-access__pill {
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    background: #edf8f7;
+    color: #15545b;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.shop-map-frame {
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(20, 35, 40, 0.12);
+}
+
+.shop-map-frame iframe {
+    display: block;
+    width: 100%;
+}
+
+.shop-photo {
+    margin: 2rem 0 0;
+    text-align: center;
+}
+
+.shop-photo__image {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 18px;
+    box-shadow: 0 16px 36px rgba(20, 35, 40, 0.16);
+}
+
+.shop-note {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    color: #48575b;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.news-section {
+    padding: 2rem 0 1rem;
+}
+
+.news-box {
+    padding: 2rem;
+    border: 1px solid rgba(19, 130, 139, 0.14);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 22px 50px rgba(20, 35, 40, 0.06);
+}
+
+.status-message,
+.empty-message,
+.error-message {
+    margin: 0;
+    padding: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.error-message {
+    color: #a13a3a;
+}
+
+.product-section {
+    padding-top: 4rem;
+}
+
+.product-section__title {
+    position: relative;
+    margin: 4rem 0 1.6rem;
+    padding-left: 1.4rem;
+    color: #142328;
+    font-size: 2.4rem;
+}
+
+.product-section__title::before {
+    content: '';
+    position: absolute;
+    top: 0.2rem;
+    left: 0;
+    bottom: 0.2rem;
+    width: 4px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #1aa2a9 0%, #15545b 100%);
+}
+
+.product-card {
+    height: 100%;
+    border: 1px solid rgba(19, 130, 139, 0.12);
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 16px 36px rgba(20, 35, 40, 0.08);
+}
+
+.product-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.product-link img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    width: 100%;
+}
+
+.product-name,
+.product-price,
+.product-stock {
+    margin: 0;
+    padding-left: 1.4rem;
+    padding-right: 1.4rem;
+}
+
+.product-name {
+    padding-top: 1.4rem;
+    color: #162428;
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.product-price {
+    padding-top: 0.5rem;
+    color: #0d6a72;
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.product-stock {
+    padding-top: 0.4rem;
+    padding-bottom: 1.5rem;
+    color: #4b5f63;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.external-section {
+    margin-top: 3rem;
+    background: linear-gradient(135deg, #10232e 0%, #0a4451 100%);
+}
+
+@media (max-width: 991px) {
+    .shop-section__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-section {
+        min-height: 68vh;
+        padding-top: 10rem;
+    }
+
+    .hero-section__lead {
+        font-size: 1.5rem;
+    }
+
+    .shop-card {
+        padding: 2rem 1.6rem;
+    }
+
+    .shop-info-list__value {
+        font-size: 1.8rem;
+    }
+
+    .news-box {
+        padding: 1.5rem;
+    }
+}
