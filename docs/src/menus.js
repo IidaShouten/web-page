@@ -44,6 +44,23 @@
                 }[char];
             });
         },
+        normalizeInlineSpacing: function (value) {
+            return String(value)
+                .replace(/\u3000/g, ' ')
+                .replace(/[ \t]+/g, ' ')
+                .trim();
+        },
+        normalizeMenuText: function (value) {
+            return String(value)
+                .normalize('NFKC')
+                .replace(/[‐‑‒–—―ｰ−－]/g, '-')
+                .replace(/[〜～∼∾]/g, '~')
+                .replace(/[／⁄∕]/g, '/')
+                .replace(/\s*・\s*/g, '・')
+                .replace(/\u3000/g, ' ')
+                .replace(/[ \t]+/g, ' ')
+                .trim();
+        },
         getCache: function () {
             return null;
         },
@@ -58,6 +75,12 @@
         return category.id;
     });
     const escapeHtml = siteRuntime.escapeHtml;
+    const normalizeMenuText = siteRuntime.normalizeMenuText;
+
+    const NORMALIZED_CATEGORY_MAP = siteConfig.categories.reduce(function (map, category) {
+        map[normalizeMenuText(category.id)] = category.id;
+        return map;
+    }, {});
 
     function createCategoryBuckets() {
         return CATEGORY_ORDER.reduce(function (buckets, category) {
@@ -67,27 +90,30 @@
     }
 
     function normalizeCategory(item) {
-        if (!item || !item.category || !CATEGORY_ORDER.includes(item.category)) {
+        const normalizedCategory = normalizeMenuText(item && item.category ? item.category : '');
+
+        if (!normalizedCategory || !NORMALIZED_CATEGORY_MAP[normalizedCategory]) {
             return 'その他';
         }
 
-        return item.category;
+        return NORMALIZED_CATEGORY_MAP[normalizedCategory];
     }
 
     function renderProductCard(item) {
         const href = item.url && item.url.trim() !== '' ? item.url : item.img_url;
+        const normalizedName = normalizeMenuText(item.name || '');
         const stockMarkup =
             item.stock === 'あり'
                 ? `在庫 ${escapeHtml(item.stock)}`
                 : '<span style="color:#c00;font-weight:600;">在庫切れ</span>';
 
         return `<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-    <article class="product-card" itemscope itemtype="https://schema.org/Product" role="group" aria-label="${escapeHtml(item.name)}">
+    <article class="product-card" itemscope itemtype="https://schema.org/Product" role="group" aria-label="${escapeHtml(normalizedName)}">
         <a href="${escapeHtml(href)}" class="product-link">
             <img src="${escapeHtml(item.img_url)}?w=300"
                 srcset="${escapeHtml(item.img_url)}?w=300 1x, ${escapeHtml(item.img_url)}?w=600 2x"
-                alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" width="${siteConfig.image.productWidth}" height="${siteConfig.image.productHeight}">
-            <h3 itemprop="name" class="product-name">${escapeHtml(item.name)}</h3>
+                alt="${escapeHtml(normalizedName)}" loading="lazy" decoding="async" width="${siteConfig.image.productWidth}" height="${siteConfig.image.productHeight}">
+            <h3 itemprop="name" class="product-name">${escapeHtml(normalizedName)}</h3>
             <h4 class="product-price">
                 <meta itemprop="priceCurrency" content="JPY">
                 <span itemprop="price">${escapeHtml(item.price)}</span>

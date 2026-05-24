@@ -100,8 +100,52 @@
         });
     }
 
+    function normalizeInlineSpacing(value) {
+        return String(value)
+            .replace(/\u3000/g, ' ')
+            .replace(/[ \t]+/g, ' ')
+            .trim();
+    }
+
+    function normalizeUnicodeWidth(value) {
+        return String(value).normalize('NFKC');
+    }
+
+    function normalizeDashVariants(value) {
+        return String(value).replace(/[‐‑‒–—―ｰ−－]/g, '-');
+    }
+
+    function normalizeWaveVariants(value) {
+        return String(value).replace(/[〜～∼∾]/g, '~');
+    }
+
+    function normalizeSlashVariants(value) {
+        return String(value).replace(/[／⁄∕]/g, '/');
+    }
+
+    function normalizeBulletSpacing(value) {
+        return String(value).replace(/\s*・\s*/g, '・');
+    }
+
+    function normalizeMenuText(value) {
+        return normalizeInlineSpacing(
+            normalizeBulletSpacing(
+                normalizeSlashVariants(
+                    normalizeWaveVariants(normalizeDashVariants(normalizeUnicodeWidth(value)))
+                )
+            )
+        );
+    }
+
     const SITE_RUNTIME = {
         escapeHtml,
+        normalizeInlineSpacing,
+        normalizeUnicodeWidth,
+        normalizeDashVariants,
+        normalizeWaveVariants,
+        normalizeSlashVariants,
+        normalizeBulletSpacing,
+        normalizeMenuText,
         getCache: function (key) {
             const storage = getStorage();
             return storage ? safeParse(storage.getItem(key)) : null;
