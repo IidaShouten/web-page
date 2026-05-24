@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ページが見つかりません | みうらの釣りえさ屋</title>
+        <script src="./src/site-config.js"></script>
+        <link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/style.css" rel="stylesheet" />
+        <link href="assets/css/site.css" rel="stylesheet" />
+    </head>
+    <body class="bait-shop-site">
+        <main class="shop-section">
+            <div class="container shop-section__container">
+                <div class="shop-card shop-card--details not-found-card">
+                    <div class="section-heading">
+                        <span class="section-heading__kicker">404</span>
+                        <h1 class="section-heading__title">ページが見つかりません</h1>
+                    </div>
+                    <p class="not-found-card__text">
+                        URL が変更されたか、ページが削除された可能性があります。
+                    </p>
+                    <p class="not-found-card__text">
+                        <a class="btn btn-border-w btn-round" href="./">トップページへ戻る</a>
+                    </p>
+                </div>
+            </div>
+        </main>
+        <script>
+            window.SiteRuntime.recordClientEvent('page_not_found', {
+                referrer: document.referrer || '',
+                search: window.location.search || '',
+            });
+        </script>
+    </body>
+</html>
