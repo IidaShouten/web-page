@@ -243,6 +243,8 @@
 }
 
 .news-box {
+    height: auto;
+    overflow: visible;
     padding: 2rem;
     border: 1px solid rgba(19, 130, 139, 0.14);
     border-radius: 16px;
@@ -383,6 +385,8 @@
     margin-top: 3rem;
     background: linear-gradient(135deg, #10232e 0%, #0a4451 100%);
 }
+
+.external-section__title { margin: 0; font-size: 18px; }
 
 .site-footer {
     padding: 1.8rem 0 2.8rem;
