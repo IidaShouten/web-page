@@ -80,6 +80,15 @@
 .hero-section__caption {
     position: relative;
     z-index: 1;
+    display: block;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.hero-section .caption-content {
+    display: block;
+    min-width: 0;
 }
 
 .hero-section__title {
@@ -99,13 +108,44 @@
     font-size: 1.7rem;
 }
 
-.hero-shop-info { display: flex; justify-content: center; gap: 48px; margin: 0 auto 12px; }
-.hero-shop-info div { text-align: left; }
+.hero-shop-info {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: center;
+    gap: 48px;
+    margin: 0 auto 16px;
+}
+
+.hero-shop-info > div {
+    min-width: 0;
+    text-align: left;
+}
+
+/* Override the legacy definition-list floats, margins and underlines. */
+.hero-shop-info dt,
+.hero-shop-info dd {
+    float: none;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 .hero-shop-info dt { color: #d1e9eb; font-size: 14px; font-weight: 400; }
-.hero-shop-info dd { color: #fff; font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.hero-shop-info dd span { display: inline-block; margin-left: 12px; font-size: 14px; font-weight: 400; }
+.hero-shop-info dd {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.hero-shop-info dd span { font-size: 14px; font-weight: 400; }
 .hero-section__note { margin: 0 auto 24px; font-size: 13px; color: #d1e9eb; max-width: 60ch; }
-.hero-section__note a { margin-left: 8px; color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.hero-section__note a { display: inline-block; margin-left: 8px; color: #fff; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 .site-button { display: inline-flex; justify-content: center; align-items: center; min-height: 48px; padding: 10px 24px; border: 1px solid #0d6a72; border-radius: 8px; background: #0d6a72; color: #fff; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; }
 .site-button:hover, .site-button:focus-visible { background: #094e55; color: #fff !important; text-decoration: none; }
@@ -421,16 +461,36 @@
 
 @media (max-width: 767px) {
     .hero-section {
-        padding: 96px 20px 40px;
+        padding: 88px 24px 36px;
     }
 
     .hero-break { display: block; }
-    .hero-shop-info { gap: 28px; }
-    .hero-shop-info dd { font-size: 24px; }
-    .hero-shop-info dd span { display: block; margin-left: 0; }
-    .hero-actions { flex-wrap: nowrap; }
-    .hero-actions .site-button { min-width: 0; flex: 1; padding-inline: 12px; }
-    .hero-section__note { font-size: 12px; }
+    .hero-section__title { margin-bottom: 16px; line-height: 1.4; }
+    .hero-shop-info {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+        max-width: 400px;
+        border-top: 1px solid rgba(209, 233, 235, 0.3);
+        border-bottom: 1px solid rgba(209, 233, 235, 0.3);
+    }
+    .hero-shop-info > div {
+        display: grid;
+        grid-template-columns: 5em minmax(0, 1fr);
+        align-items: baseline;
+        gap: 16px;
+        padding: 10px 0;
+    }
+    .hero-shop-info dd { font-size: 24px; line-height: 1.5; }
+    .hero-shop-info dd span { font-size: 12px; }
+    .hero-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .hero-actions .site-button { min-width: 0; padding: 12px 8px; font-size: 16px; }
+    .hero-section__note { max-width: 400px; margin-bottom: 20px; font-size: 13px; line-height: 1.7; }
     .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     .product-card__body { padding: 12px; }
     .product-name, .product-price { font-size: 16px; }
@@ -442,7 +502,10 @@
     .visit-section__inner { align-items: stretch; flex-direction: column; }
 
     .hero-section__lead {
-        font-size: 1.5rem;
+        margin-bottom: 24px;
+        font-size: 16px;
+        line-height: 1.7;
+        text-wrap: pretty;
     }
 
     .shop-card {
