@@ -51,7 +51,7 @@
                 return;
             }
 
-            const $target = $(href);
+            const $target = $(document.getElementById(decodeURIComponent(href.slice(1))));
 
             if (!$target.length) {
                 return;
@@ -62,17 +62,12 @@
                 {
                     scrollTop: $target.offset().top - 50,
                 },
-                700
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400
             );
 
             $('.navbar-collapse.in').collapse('hide');
         });
     }
-
-    $(window).on('load', function () {
-        $('.loader').fadeOut(150);
-        $('.page-loader').delay(250).fadeOut('slow');
-    });
 
     $(function () {
         updateScrollTopButton();

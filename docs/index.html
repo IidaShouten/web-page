@@ -58,12 +58,9 @@
         <link href="assets/css/style.css" rel="stylesheet" />
         <link href="assets/css/site.css" rel="stylesheet" />
     </head>
-    <body class="bait-shop-site" data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+    <body class="bait-shop-site" id="totop">
         <a class="skip-link" href="#main-content">本文へ移動</a>
         <main id="main-content">
-            <div class="page-loader">
-                <div class="loader"></div>
-            </div>
             <nav class="navbar navbar-custom navbar-fixed-top site-navbar" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
@@ -72,8 +69,10 @@
                             type="button"
                             data-toggle="collapse"
                             data-target="#custom-collapse"
+                            aria-controls="custom-collapse"
+                            aria-expanded="false"
                         >
-                            <span class="sr-only">Toggle navigation</span>
+                            <span class="sr-only">メニューを開閉</span>
                             <span class="icon-bar"></span><span class="icon-bar"></span
                             ><span class="icon-bar"></span></button
                         ><a class="navbar-brand site-navbar__brand" href="index.html" aria-label="みうらの釣りえさ屋 トップページ">
@@ -103,45 +102,45 @@
                                 </a>
                                 <ul class="dropdown-menu" id="category-nav">
                                     <li>
-                                        <a class="section-scroll" href="#ダンゴ"><b>ダンゴ</b></a>
+                                        <a class="section-scroll" href="#demos" data-category="ダンゴ"><b>ダンゴ</b></a>
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#オキアミ"
+                                        <a class="section-scroll" href="#demos" data-category="オキアミ"
                                             ><b>オキアミ</b></a
                                         >
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#魚"><b>魚</b></a>
+                                        <a class="section-scroll" href="#demos" data-category="魚"><b>魚</b></a>
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#エビ"><b>エビ</b></a>
+                                        <a class="section-scroll" href="#demos" data-category="エビ"><b>エビ</b></a>
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#サビキ"><b>サビキ</b></a>
+                                        <a class="section-scroll" href="#demos" data-category="サビキ"><b>サビキ</b></a>
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#魚かし"><b>魚かし</b></a>
+                                        <a class="section-scroll" href="#demos" data-category="魚かし"><b>魚かし</b></a>
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#練餌海道"
+                                        <a class="section-scroll" href="#demos" data-category="練餌海道"
                                             ><b>練餌海道</b></a
                                         >
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#本多商店"
+                                        <a class="section-scroll" href="#demos" data-category="本多商店"
                                             ><b>本多商店</b></a
                                         >
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#福吉"
+                                        <a class="section-scroll" href="#demos" data-category="福吉"
                                             ><b>魚餌研究所 福吉</b></a
                                         >
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#活エサ"><b>活エサ</b></a>
+                                        <a class="section-scroll" href="#demos" data-category="活エサ"><b>活エサ</b></a>
                                     </li>
                                     <li>
-                                        <a class="section-scroll" href="#その他"><b>その他</b></a>
+                                        <a class="section-scroll" href="#demos" data-category="その他"><b>その他</b></a>
                                     </li>
                                 </ul>
                             </li>
@@ -158,23 +157,22 @@
                 <div class="hero-section__backdrop"></div>
                 <div class="titan-caption hero-section__caption">
                     <div class="caption-content">
-                        <div class="font-alt mb-30 titan-title-size-4 hero-section__eyebrow">
-                            価格で勝負の釣りえさ専門店
-                        </div>
-                        <h1 class="font-alt mb-40 titan-title-size-3 hero-section__title">
-                            <b>100</b>種類以上取扱い
+                        <h1 class="hero-section__title">
+                            釣り堀エサ、<br class="hero-break" />100種類以上。
                         </h1>
-                        <div class="font-alt mb-40 titan-title-size-3 hero-section__subtitle">
-                            釣り堀エサなんでも揃います！
-                        </div>
                         <p class="hero-section__lead">
-                            神奈川県三浦市三崎で、朝の釣行前に立ち寄りやすい釣りエサ専門店です。
+                            価格で勝負の釣りえさ専門店。<br />
+                            三浦市三崎で、朝の釣行前のお買い物に。
                         </p>
-                        <a
-                            class="section-scroll btn btn-border-w btn-round mb-30 titan-title-size-2 hero-section__cta"
-                            href="#demos"
-                            >えさ一覧を見る</a
-                        >
+                        <dl class="hero-shop-info">
+                            <div><dt>営業時間</dt><dd>5:30–7:00</dd></div>
+                            <div><dt>定休日</dt><dd>火曜日<span>祝祭日は営業</span></dd></div>
+                        </dl>
+                        <p class="hero-section__note">営業予定はみうら海王に準じて変更する場合があります。<a class="section-scroll" href="#shop-detail">店舗詳細へ</a></p>
+                        <div class="hero-actions">
+                            <a class="site-button site-button--light section-scroll" href="#demos">エサを探す</a>
+                            <a class="site-button site-button--outline" href="https://maps.app.goo.gl/9po7NzLxAaTd9zu56" target="_blank" rel="noopener noreferrer">地図を開く<span class="sr-only">（新しいタブ）</span></a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -182,7 +180,6 @@
             <section class="shop-section" id="shop-detail">
                 <div class="container shop-section__container">
                     <div class="section-heading">
-                        <span class="section-heading__kicker">Shop Info</span>
                         <h2 class="section-heading__title">店舗情報</h2>
                     </div>
 
@@ -255,6 +252,7 @@
                                 class="shop-photo__image"
                             />
                             </figure>
+                            <p class="shop-note">店舗は THE OCEAN VIEW miura の2階です。</p>
                             <p class="shop-note">
                                 ※正面玄関及び建物間のスペースへの駐車停車はご遠慮ください。
                             </p>
@@ -263,14 +261,15 @@
                 </div>
             </section>
 
-            <section class="news-section">
+            <section class="news-section" id="news-section">
                 <div class="container">
                     <div class="section-heading section-heading--left">
-                        <span class="section-heading__kicker">News</span>
                         <h2 class="section-heading__title">新着情報</h2>
                     </div>
-                    <div class="news-box fa-border" id="news" aria-live="polite">
-                        <p class="status-message">新着情報を読み込み中です。</p>
+                    <div class="news-box">
+                        <p class="status-message" id="news-status" role="status">新着情報を読み込み中です。</p>
+                        <button class="site-button site-button--small" id="news-retry" type="button" hidden>もう一度読み込む</button>
+                        <div id="news" aria-busy="true"></div>
                     </div>
                     <p class="meta-text" id="news-updated-at"></p>
                 </div>
@@ -279,65 +278,101 @@
                 <section class="module-medium product-section" id="demos">
                     <div class="container">
                         <div class="section-heading section-heading--left">
-                            <span class="section-heading__kicker">Products</span>
-                            <h2 class="section-heading__title">カテゴリ別えさ一覧</h2>
+                            <h2 class="section-heading__title">エサを探す</h2>
+                            <p class="section-heading__description">商品名・エサの種類・メーカーから探せます。</p>
                         </div>
-                        <section class="product-category-block" aria-labelledby="heading-ダンゴ">
+                        <form class="product-filters" id="product-filters" role="search" aria-label="商品を検索">
+                            <div class="filter-field filter-field--search">
+                                <label for="product-search">商品名・キーワード</label>
+                                <input id="product-search" type="search" placeholder="例：オキアミ、ダンゴ" autocomplete="off" />
+                            </div>
+                            <div class="filter-field">
+                                <label for="product-category">種類・メーカー</label>
+                                <select id="product-category"><option value="">すべてのカテゴリ</option></select>
+                            </div>
+                            <label class="filter-stock" for="product-in-stock"><input id="product-in-stock" type="checkbox" />在庫ありのみ</label>
+                            <button class="filter-reset" id="product-reset" type="button">条件をクリア</button>
+                        </form>
+                        <div class="catalog-summary">
+                            <p id="product-count" role="status" aria-atomic="true"></p>
+                            <p class="meta-text" id="menus-updated-at"></p>
+                        </div>
+                        <p class="catalog-note">日時は掲載データの取得時刻です。在庫の確認日時ではありません。</p>
+                        <p class="status-message" id="menus-status" role="status">商品一覧を読み込み中です。</p>
+                        <button class="site-button site-button--small" id="menus-retry" type="button" hidden>もう一度読み込む</button>
+                        <noscript><p class="error-message">商品一覧と新着情報を見るには、ブラウザのJavaScriptを有効にしてください。</p></noscript>
+                        <div class="catalog-empty" id="product-empty" hidden>
+                            <p></p><button class="site-button site-button--small" type="button">すべての商品を見る</button>
+                        </div>
+                        <div id="product-results" aria-busy="true">
+                        <section class="product-category-block" hidden aria-labelledby="heading-ダンゴ">
                             <h3 class="product-section__title" id="heading-ダンゴ"><b>ダンゴ</b></h3>
-                            <div class="row multi-columns-row row-eq-height" id="ダンゴ"></div>
+                            <div class="product-grid" id="ダンゴ"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-オキアミ">
+                        <section class="product-category-block" hidden aria-labelledby="heading-オキアミ">
                             <h3 class="product-section__title" id="heading-オキアミ">
                                 <b>オキアミ</b>
                             </h3>
-                            <div class="row multi-columns-row row-eq-height" id="オキアミ"></div>
+                            <div class="product-grid" id="オキアミ"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-魚">
+                        <section class="product-category-block" hidden aria-labelledby="heading-魚">
                             <h3 class="product-section__title" id="heading-魚"><b>魚</b></h3>
-                            <div class="row multi-columns-row row-eq-height" id="魚"></div>
+                            <div class="product-grid" id="魚"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-エビ">
+                        <section class="product-category-block" hidden aria-labelledby="heading-エビ">
                             <h3 class="product-section__title" id="heading-エビ"><b>エビ</b></h3>
-                            <div class="row multi-columns-row row-eq-height" id="エビ"></div>
+                            <div class="product-grid" id="エビ"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-サビキ">
+                        <section class="product-category-block" hidden aria-labelledby="heading-サビキ">
                             <h3 class="product-section__title" id="heading-サビキ"><b>サビキ</b></h3>
-                            <div class="row multi-columns-row row-eq-height" id="サビキ"></div>
+                            <div class="product-grid" id="サビキ"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-魚かし">
+                        <section class="product-category-block" hidden aria-labelledby="heading-魚かし">
                             <h3 class="product-section__title" id="heading-魚かし"><b>魚かし</b></h3>
-                            <div class="row multi-columns-row row-eq-height" id="魚かし"></div>
+                            <div class="product-grid" id="魚かし"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-練餌海道">
+                        <section class="product-category-block" hidden aria-labelledby="heading-練餌海道">
                             <h3 class="product-section__title" id="heading-練餌海道">
                                 <b>練餌海道</b>
                             </h3>
-                            <div class="row multi-columns-row row-eq-height" id="練餌海道"></div>
+                            <div class="product-grid" id="練餌海道"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-本多商店">
+                        <section class="product-category-block" hidden aria-labelledby="heading-本多商店">
                             <h3 class="product-section__title" id="heading-本多商店">
                                 <b>本多商店</b>
                             </h3>
-                            <div class="row multi-columns-row row-eq-height" id="本多商店"></div>
+                            <div class="product-grid" id="本多商店"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-福吉">
+                        <section class="product-category-block" hidden aria-labelledby="heading-福吉">
                             <h3 class="product-section__title" id="heading-福吉">
                                 <b>魚餌研究所 福吉</b>
                             </h3>
-                            <div class="row multi-columns-row row-eq-height" id="福吉"></div>
+                            <div class="product-grid" id="福吉"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-活エサ">
+                        <section class="product-category-block" hidden aria-labelledby="heading-活エサ">
                             <h3 class="product-section__title" id="heading-活エサ"><b>活エサ</b></h3>
-                            <div class="row multi-columns-row row-eq-height" id="活エサ"></div>
+                            <div class="product-grid" id="活エサ"></div>
                         </section>
-                        <section class="product-category-block" aria-labelledby="heading-その他">
+                        <section class="product-category-block" hidden aria-labelledby="heading-その他">
                             <h3 class="product-section__title" id="heading-その他"><b>その他</b></h3>
-                            <div class="row multi-columns-row row-eq-height" id="その他"></div>
+                            <div class="product-grid" id="その他"></div>
                         </section>
-                        <p class="meta-text" id="menus-updated-at"></p>
+                        </div>
                     </div>
                 </section>
             </div>
+
+            <section class="visit-section" aria-labelledby="visit-title">
+                <div class="container visit-section__inner">
+                    <div>
+                        <h2 id="visit-title">朝の釣行前に、お立ち寄りください。</h2>
+                        <p>営業時間 5:30–7:00 ／ 火曜定休（祝祭日は営業）</p>
+                        <p>三浦市三崎5丁目12-3 THE OCEAN VIEW miura 2階</p>
+                        <a class="text-link section-scroll" href="#shop-detail">営業予定・アクセスの詳細を見る</a>
+                    </div>
+                    <a class="site-button" href="https://maps.app.goo.gl/9po7NzLxAaTd9zu56" target="_blank" rel="noopener noreferrer">地図を開く<span class="sr-only">（新しいタブ）</span></a>
+                </div>
+            </section>
 
             <section class="module-extra-small bg-dark external-section">
                 <div class="container" id="other-link">
