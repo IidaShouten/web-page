@@ -10,33 +10,32 @@
             productHeight: 300,
         },
         api: {
-            timeoutMs: 15000,
             news: 'https://script.google.com/macros/s/AKfycbx6bzcZ7HHwRWh9ieGrWiGTx2khsOUKXPhUNATQF2n3KThDLDILUCn8R-FGrrjm3DrzzQ/exec',
             menus:
                 'https://script.google.com/macros/s/AKfycbyrCy6zydNo59xmisnkwkDsx4TIC6AY_LNhrzCpA-SZspYWe_cLwIWHEN0VmFnP5yls-w/exec',
         },
         categories: [
-            { id: 'ダンゴ', label: 'ダンゴ', group: 'エサの種類' },
-            { id: 'オキアミ', label: 'オキアミ', group: 'エサの種類' },
-            { id: '魚', label: '魚', group: 'エサの種類' },
-            { id: 'エビ', label: 'エビ', group: 'エサの種類' },
-            { id: 'サビキ', label: 'サビキ', group: 'エサの種類' },
-            { id: '魚かし', label: '魚かし', group: 'メーカー' },
-            { id: '練餌海道', label: '練餌海道', group: 'メーカー' },
-            { id: '本多商店', label: '本多商店', group: 'メーカー' },
-            { id: '福吉', label: '魚餌研究所 福吉', group: 'メーカー' },
-            { id: '活エサ', label: '活エサ', group: 'エサの種類' },
-            { id: 'その他', label: 'その他', group: 'その他' },
+            { id: 'ダンゴ', label: 'ダンゴ' },
+            { id: 'オキアミ', label: 'オキアミ' },
+            { id: '魚', label: '魚' },
+            { id: 'エビ', label: 'エビ' },
+            { id: 'サビキ', label: 'サビキ' },
+            { id: '魚かし', label: '魚かし' },
+            { id: '練餌海道', label: '練餌海道' },
+            { id: '本多商店', label: '本多商店' },
+            { id: '福吉', label: '魚餌研究所 福吉' },
+            { id: '活エサ', label: '活エサ' },
+            { id: 'その他', label: 'その他' },
         ],
         messages: {
             newsLoading: '新着情報を読み込み中です。',
             newsEmpty: '現在お知らせはありません。',
-            newsError: '新着情報を読み込めませんでした。通信状況を確認して、もう一度お試しください。',
+            newsError: '新着情報の取得に失敗しました。時間をおいて再度ご確認ください。',
             newsFallback: '最新の新着情報を取得できなかったため、前回保存した内容を表示しています。',
             menusEmpty: '現在掲載商品はありません。',
-            menusError: '商品一覧を読み込めませんでした。通信状況を確認して、もう一度お試しください。',
+            menusError: '商品一覧の取得に失敗しました。時間をおいて再度ご確認ください。',
             menusFallback: '最新の商品一覧を取得できなかったため、前回保存した内容を表示しています。',
-            updatedAtPrefix: '情報取得日時',
+            updatedAtPrefix: '最終更新',
         },
         storageKeys: {
             newsCache: 'miura-bait-shop-news-cache',
@@ -138,34 +137,6 @@
         );
     }
 
-    function normalizeSearchText(value) {
-        return normalizeMenuText(value).toLocaleLowerCase('ja-JP').replace(/[ァ-ヶ]/g, function (char) {
-            return String.fromCharCode(char.charCodeAt(0) - 0x60);
-        });
-    }
-
-    function safeUrl(value) {
-        if (typeof value !== 'string' || !value.trim()) return '';
-        try {
-            const url = new URL(value, window.location.href);
-            return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
-        } catch (error) {
-            return '';
-        }
-    }
-
-    async function fetchJson(url, timeoutMs = SITE_CONFIG.api.timeoutMs) {
-        const controller = new AbortController();
-        const timer = setTimeout(function () { controller.abort(); }, timeoutMs);
-        try {
-            const response = await fetch(url, { signal: controller.signal });
-            if (!response.ok) throw new Error(`Request failed: ${response.status}`);
-            return await response.json();
-        } finally {
-            clearTimeout(timer);
-        }
-    }
-
     const SITE_RUNTIME = {
         escapeHtml,
         normalizeInlineSpacing,
@@ -175,16 +146,9 @@
         normalizeSlashVariants,
         normalizeBulletSpacing,
         normalizeMenuText,
-        normalizeSearchText,
-        safeUrl,
-        fetchJson,
         getCache: function (key) {
             const storage = getStorage();
-            try {
-                return storage ? safeParse(storage.getItem(key)) : null;
-            } catch (error) {
-                return null;
-            }
+            return storage ? safeParse(storage.getItem(key)) : null;
         },
         setCache: function (key, payload) {
             const storage = getStorage();
@@ -193,17 +157,16 @@
                 return;
             }
 
-            try {
-                storage.setItem(key, JSON.stringify({
-                    savedAt: new Date().toISOString(), payload: payload,
-                }));
-            } catch (error) {
-                // A full or disabled cache must not interrupt the visible content.
-            }
+            storage.setItem(
+                key,
+                JSON.stringify({
+                    savedAt: new Date().toISOString(),
+                    payload: payload,
+                })
+            );
         },
         formatDateTime: function (value) {
-            if (!value) return '';
-            const date = new Date(value);
+            const date = value ? new Date(value) : new Date();
 
             if (Number.isNaN(date.getTime())) {
                 return '';
@@ -215,7 +178,6 @@
                 day: '2-digit',
                 hour: '2-digit',
                 minute: '2-digit',
-                timeZone: 'Asia/Tokyo',
             }).format(date);
         },
         updateTimestamp: function (elementId, value) {
@@ -240,15 +202,12 @@
             const storage = getStorage();
 
             if (storage) {
-                try {
-                    const parsed = safeParse(storage.getItem(SITE_CONFIG.storageKeys.clientLogs));
-                    const existing = Array.isArray(parsed) ? parsed : [];
-                    existing.push(entry);
-                    storage.setItem(SITE_CONFIG.storageKeys.clientLogs,
-                        JSON.stringify(existing.slice(-SITE_CONFIG.observability.maxStoredLogs)));
-                } catch (error) {
-                    // Diagnostics must never prevent recovery from the original error.
-                }
+                const existing = safeParse(storage.getItem(SITE_CONFIG.storageKeys.clientLogs)) || [];
+                existing.push(entry);
+                storage.setItem(
+                    SITE_CONFIG.storageKeys.clientLogs,
+                    JSON.stringify(existing.slice(-SITE_CONFIG.observability.maxStoredLogs))
+                );
             }
 
             if (SITE_CONFIG.observability.logEndpoint && navigator.sendBeacon) {

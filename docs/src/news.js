@@ -1,73 +1,104 @@
 (function () {
-    const config = window.SiteConfig;
-    const runtime = window.SiteRuntime;
-    const container = document.getElementById('news');
-    const status = document.getElementById('news-status');
-    const retry = document.getElementById('news-retry');
-    if (!container || !status || !retry) return;
-    let hasData = false;
-    let loading = false;
+    const siteConfig = window.SiteConfig || {
+        api: {
+            news: 'https://script.google.com/macros/s/AKfycbx6bzcZ7HHwRWh9ieGrWiGTx2khsOUKXPhUNATQF2n3KThDLDILUCn8R-FGrrjm3DrzzQ/exec',
+        },
+        storageKeys: {
+            newsCache: 'miura-bait-shop-news-cache',
+        },
+        messages: {
+            newsLoading: '新着情報を読み込み中です。',
+            newsEmpty: '現在お知らせはありません。',
+            newsError: '新着情報の取得に失敗しました。時間をおいて再度ご確認ください。',
+            newsFallback:
+                '最新の新着情報を取得できなかったため、前回保存した内容を表示しています。',
+        },
+    };
 
-    function publishedAt(item) {
-        const year = Number(item.year);
-        const month = Number(item.month);
-        const day = Number(item.day);
-        const date = new Date(Date.UTC(year, month - 1, day));
-        return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day
-            ? date.getTime() : null;
+    const siteRuntime = window.SiteRuntime || {
+        escapeHtml: function (value) {
+            return String(value).replace(/[&<>"']/g, function (char) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;',
+                }[char];
+            });
+        },
+        getCache: function () {
+            return null;
+        },
+        setCache: function () {},
+        updateTimestamp: function () {},
+        recordClientEvent: function () {},
+    };
+
+    const NEWS_API_URL = siteConfig.api.news;
+    const NEWS_CACHE_KEY = siteConfig.storageKeys.newsCache;
+    const escapeHtml = siteRuntime.escapeHtml;
+
+    function renderStatus(container, className, message) {
+        container.innerHTML = `<p class="${className}">${escapeHtml(message)}</p>`;
     }
 
-    function renderItems(items) {
-        return `<dl class="news-list">${items.map(function (item) {
-            const date = publishedAt(item);
-            const label = date === null ? '日付未登録' : `${item.year}/${item.month}/${item.day}`;
-            return `<div class="news-list__item"><dt>${runtime.escapeHtml(label)}</dt><dd>${runtime.escapeHtml(item.message || '')}</dd></div>`;
-        }).join('')}</dl>`;
-    }
-
-    function renderNews(list, savedAt) {
-        if (!Array.isArray(list) || list.some(function (item) {
-            return !item || typeof item !== 'object' || Array.isArray(item);
-        })) throw new Error('Unexpected news data');
-        const ordered = list.slice().sort(function (a, b) { return (publishedAt(b) || 0) - (publishedAt(a) || 0); });
-        const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
-        const recent = ordered.filter(function (item) { return publishedAt(item) === null || publishedAt(item) >= cutoff; });
-        const archive = ordered.filter(function (item) { return publishedAt(item) !== null && publishedAt(item) < cutoff; });
-        const summary = !ordered.length ? config.messages.newsEmpty
-            : '直近90日のお知らせはありません。過去のお知らせは下から確認できます。';
-        container.innerHTML = (recent.length ? renderItems(recent) : `<p class="empty-message">${runtime.escapeHtml(summary)}</p>`)
-            + (archive.length ? `<details class="news-archive"><summary>過去のお知らせを見る（${archive.length}件）</summary>${renderItems(archive)}</details>` : '');
-        hasData = true;
-        runtime.updateTimestamp('news-updated-at', savedAt);
+    function renderNewsItems(items) {
+        return `<dl>${items
+            .map(function (item) {
+                const date = `${escapeHtml(item.year)}/${escapeHtml(item.month)}/${escapeHtml(item.day)}`;
+                return `<dt>${date}</dt><dd>${escapeHtml(item.message)}</dd>`;
+            })
+            .join('')}</dl>`;
     }
 
     async function loadNews() {
-        if (loading) return;
-        loading = true;
-        retry.hidden = true;
-        container.setAttribute('aria-busy', 'true');
-        status.textContent = hasData ? '保存済みのお知らせを表示しています。最新の情報を確認中です。' : config.messages.newsLoading;
-        status.className = 'status-message';
-        status.hidden = false;
+        const container = document.getElementById('news');
+
+        if (!container) {
+            return;
+        }
+
+        renderStatus(container, 'status-message', siteConfig.messages.newsLoading);
+
         try {
-            const list = await runtime.fetchJson(config.api.news);
-            renderNews(list, new Date().toISOString());
-            runtime.setCache(config.storageKeys.newsCache, list);
-            status.hidden = true;
+            const response = await fetch(NEWS_API_URL);
+
+            if (!response.ok) {
+                throw new Error(`Request failed: ${response.status}`);
+            }
+
+            const list = await response.json();
+
+            if (!Array.isArray(list) || list.length === 0) {
+                renderStatus(container, 'empty-message', siteConfig.messages.newsEmpty);
+                siteRuntime.updateTimestamp('news-updated-at', new Date().toISOString());
+                return;
+            }
+
+            const ordered = list.slice().reverse();
+            siteRuntime.setCache(NEWS_CACHE_KEY, ordered);
+            container.innerHTML = renderNewsItems(ordered);
+            siteRuntime.updateTimestamp('news-updated-at', new Date().toISOString());
         } catch (error) {
-            runtime.recordClientEvent('news_fetch_failed', { message: error.message });
-            status.textContent = hasData ? config.messages.newsFallback : config.messages.newsError;
-            status.className = hasData ? 'fallback-message' : 'error-message';
-            retry.hidden = false;
-        } finally {
-            loading = false;
-            container.setAttribute('aria-busy', 'false');
+            console.error('Failed to load news.', error);
+            siteRuntime.recordClientEvent('news_fetch_failed', {
+                message: error && error.message ? error.message : 'Unknown error',
+            });
+
+            const cached = siteRuntime.getCache(NEWS_CACHE_KEY);
+
+            if (cached && Array.isArray(cached.payload) && cached.payload.length > 0) {
+                container.innerHTML =
+                    `<p class="fallback-message">${escapeHtml(siteConfig.messages.newsFallback)}</p>` +
+                    renderNewsItems(cached.payload);
+                siteRuntime.updateTimestamp('news-updated-at', cached.savedAt);
+                return;
+            }
+
+            renderStatus(container, 'error-message', siteConfig.messages.newsError);
         }
     }
-    retry.addEventListener('click', loadNews);
-    const cached = runtime.getCache(config.storageKeys.newsCache);
-    if (cached) {
-        try { renderNews(cached.payload, cached.savedAt); } catch (error) { /* Ignore unusable caches. */ }
-    }
+
     loadNews();
 })();

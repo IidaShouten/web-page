@@ -1,163 +1,229 @@
 (function () {
-    const config = window.SiteConfig;
-    const runtime = window.SiteRuntime;
-    const escapeHtml = runtime.escapeHtml;
-    const form = document.getElementById('product-filters');
-    const search = document.getElementById('product-search');
-    const categoryFilter = document.getElementById('product-category');
-    const stockFilter = document.getElementById('product-in-stock');
-    const status = document.getElementById('menus-status');
-    const retry = document.getElementById('menus-retry');
-    const results = document.getElementById('product-results');
-    const empty = document.getElementById('product-empty');
-    const count = document.getElementById('product-count');
-    if (!form || !results) return;
+    const siteConfig = window.SiteConfig || {
+        api: {
+            menus:
+                'https://script.google.com/macros/s/AKfycbyrCy6zydNo59xmisnkwkDsx4TIC6AY_LNhrzCpA-SZspYWe_cLwIWHEN0VmFnP5yls-w/exec',
+        },
+        storageKeys: {
+            menusCache: 'miura-bait-shop-menus-v2-cache',
+        },
+        image: {
+            productWidth: 300,
+            productHeight: 300,
+        },
+        categories: [
+            { id: 'ダンゴ' },
+            { id: 'オキアミ' },
+            { id: '魚' },
+            { id: 'エビ' },
+            { id: 'サビキ' },
+            { id: '魚かし' },
+            { id: '練餌海道' },
+            { id: '本多商店' },
+            { id: '福吉' },
+            { id: '活エサ' },
+            { id: 'その他' },
+        ],
+        messages: {
+            menusEmpty: '現在掲載商品はありません。',
+            menusError: '商品一覧の取得に失敗しました。時間をおいて再度ご確認ください。',
+            menusFallback:
+                '最新の商品一覧を取得できなかったため、前回保存した内容を表示しています。',
+        },
+    };
 
-    let products = [];
-    let hasData = false;
-    let loading = false;
-    const categoryMap = new Map(config.categories.map(function (category) {
-        return [runtime.normalizeMenuText(category.id), category.id];
-    }));
+    const siteRuntime = window.SiteRuntime || {
+        escapeHtml: function (value) {
+            return String(value).replace(/[&<>"']/g, function (char) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;',
+                }[char];
+            });
+        },
+        normalizeInlineSpacing: function (value) {
+            return String(value)
+                .replace(/\u3000/g, ' ')
+                .replace(/[ \t]+/g, ' ')
+                .trim();
+        },
+        normalizeMenuText: function (value) {
+            return String(value)
+                .normalize('NFKC')
+                .replace(/[‐‑‒–—―ｰ−－]/g, '-')
+                .replace(/[〜～∼∾]/g, '~')
+                .replace(/[／⁄∕]/g, '/')
+                .replace(/\s*・\s*/g, '・')
+                .replace(/\u3000/g, ' ')
+                .replace(/[ \t]+/g, ' ')
+                .trim();
+        },
+        getCache: function () {
+            return null;
+        },
+        setCache: function () {},
+        updateTimestamp: function () {},
+        recordClientEvent: function () {},
+    };
 
-    function categoryOf(item) {
-        return categoryMap.get(runtime.normalizeMenuText(item.category || '')) || 'その他';
+    const MENUS_API_URL = siteConfig.api.menus;
+    const MENU_CACHE_KEY = siteConfig.storageKeys.menusCache;
+    const CATEGORY_ORDER = siteConfig.categories.map(function (category) {
+        return category.id;
+    });
+    const escapeHtml = siteRuntime.escapeHtml;
+    const normalizeMenuText = siteRuntime.normalizeMenuText;
+
+    const NORMALIZED_CATEGORY_MAP = siteConfig.categories.reduce(function (map, category) {
+        map[normalizeMenuText(category.id)] = category.id;
+        return map;
+    }, {});
+
+    function createCategoryBuckets() {
+        return CATEGORY_ORDER.reduce(function (buckets, category) {
+            buckets[category] = [];
+            return buckets;
+        }, {});
     }
 
-    function stockOf(item) {
-        const value = runtime.normalizeMenuText(item.stock || '');
-        if (value === 'あり') return { label: '在庫あり', available: true, className: 'is-available' };
-        if (['なし', '無し', '在庫切れ', '売り切れ'].includes(value)) {
-            return { label: '在庫切れ', available: false, className: 'is-sold-out' };
+    function normalizeCategory(item) {
+        const normalizedCategory = normalizeMenuText(item && item.category ? item.category : '');
+
+        if (!Object.prototype.hasOwnProperty.call(NORMALIZED_CATEGORY_MAP, normalizedCategory)) {
+            return 'その他';
         }
-        return { label: '在庫未確認', available: false, className: 'is-unknown' };
+
+        return NORMALIZED_CATEGORY_MAP[normalizedCategory];
     }
 
-    function renderProduct(item) {
-        const name = runtime.normalizeMenuText(item.name || '商品名未登録');
-        const imageUrl = runtime.safeUrl(item.img_url);
-        const detailUrl = runtime.safeUrl(item.url);
-        const stock = stockOf(item);
-        const photo = imageUrl
-            ? `<a class="product-photo" href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(name)}の写真を拡大（新しいタブ）">
-                <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" width="${config.image.productWidth}" height="${config.image.productHeight}">
-                <span class="product-photo__label">写真を拡大</span>
-               </a>`
-            : '<div class="product-photo product-photo--empty">写真準備中</div>';
-        const detail = detailUrl && detailUrl !== imageUrl
-            ? `<a class="product-detail text-link" href="${escapeHtml(detailUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(name)}の商品説明（外部サイト・新しいタブ）">商品説明 <span>（外部サイト）</span></a>`
+    function safeUrl(value) {
+        if (typeof value !== 'string' || !value.trim()) {
+            return '';
+        }
+
+        try {
+            const url = new URL(value, window.location.href);
+            return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+        } catch (error) {
+            return '';
+        }
+    }
+
+    function isMenuList(value) {
+        return Array.isArray(value) && value.every(function (item) {
+            return item && typeof item === 'object' && !Array.isArray(item) &&
+                ['category', 'name', 'price', 'stock', 'url', 'img_url'].every(function (field) {
+                    return item[field] == null || ['string', 'number', 'boolean'].includes(typeof item[field]);
+                });
+        });
+    }
+
+    function renderProductCard(item) {
+        const imageUrl = safeUrl(item.img_url);
+        const href = safeUrl(item.url) || imageUrl;
+        const srcsetUrl = escapeHtml(imageUrl.replace(/,/g, '%2C'));
+        const imageAttributes = imageUrl
+            ? `src="${escapeHtml(imageUrl)}?w=300" srcset="${srcsetUrl}?w=300 1x, ${srcsetUrl}?w=600 2x"`
             : '';
-        return `<article class="product-card">
-            ${photo}
-            <div class="product-card__body">
-                <h4 class="product-name">${escapeHtml(name)}</h4>
-                <p class="product-price">${escapeHtml(item.price || '価格は店頭でご確認ください')}</p>
-                <p class="product-stock ${stock.className}">${stock.label}</p>
-                ${detail}
-            </div>
-        </article>`;
+        const normalizedName = normalizeMenuText(item.name || '');
+        const stockMarkup =
+            item.stock === 'あり'
+                ? `在庫 ${escapeHtml(item.stock)}`
+                : '<span style="color:#c00;font-weight:600;">在庫切れ</span>';
+
+        return `<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+    <article class="product-card" itemscope itemtype="https://schema.org/Product" role="group" aria-label="${escapeHtml(normalizedName)}">
+        <a${href ? ` href="${escapeHtml(href)}"` : ''} class="product-link">
+            <img ${imageAttributes}
+                alt="${escapeHtml(normalizedName)}" loading="lazy" decoding="async" width="${siteConfig.image.productWidth}" height="${siteConfig.image.productHeight}">
+            <h3 itemprop="name" class="product-name">${escapeHtml(normalizedName)}</h3>
+            <h4 class="product-price">
+                <meta itemprop="priceCurrency" content="JPY">
+                <span itemprop="price">${escapeHtml(item.price)}</span>
+            </h4>
+            <h4 class="product-stock">${stockMarkup}</h4>
+        </a>
+    </article>
+</div>`;
     }
 
-    function renderProducts() {
-        if (!hasData) return;
-        const terms = runtime.normalizeSearchText(search.value).split(/\s+/).filter(Boolean);
-        const filtered = products.filter(function (item) {
-            const category = categoryOf(item);
-            const categoryLabel = config.categories.find(function (entry) { return entry.id === category; }).label;
-            const text = runtime.normalizeSearchText(`${item.name || ''} ${categoryLabel}`);
-            return (!categoryFilter.value || category === categoryFilter.value)
-                && (!stockFilter.checked || stockOf(item).available)
-                && terms.every(function (term) { return text.includes(term); });
+    function renderCategory(category, items) {
+        const container = document.getElementById(category);
+
+        if (!container) {
+            return;
+        }
+
+        if (items.length === 0) {
+            container.innerHTML = `<p class="empty-message">${escapeHtml(siteConfig.messages.menusEmpty)}</p>`;
+            return;
+        }
+
+        container.innerHTML = items.join('');
+    }
+
+    function createMenuBuckets(list) {
+        const buckets = createCategoryBuckets();
+        list.forEach(function (item) {
+            const category = normalizeCategory(item);
+            buckets[category].push(renderProductCard(item));
         });
-        config.categories.forEach(function (category) {
-            const container = document.getElementById(category.id);
-            const items = filtered.filter(function (item) { return categoryOf(item) === category.id; });
-            container.closest('.product-category-block').hidden = items.length === 0;
-            container.innerHTML = items.map(renderProduct).join('');
-        });
-        count.textContent = `${products.length}点中 ${filtered.length}点を表示`;
-        empty.hidden = filtered.length !== 0;
-        empty.querySelector('p').textContent = products.length
-            ? '条件に合う商品が見つかりませんでした。検索語やカテゴリを変えてお試しください。'
-            : config.messages.menusEmpty;
-        empty.querySelector('button').hidden = products.length === 0;
-    }
-
-    function setStatus(message, kind) {
-        status.textContent = message;
-        status.className = kind || 'status-message';
-        status.hidden = !message;
-    }
-
-    function acceptData(list, savedAt) {
-        if (!Array.isArray(list) || list.some(function (item) {
-            return !item || typeof item !== 'object' || Array.isArray(item);
-        })) throw new Error('Unexpected product data');
-        products = list;
-        hasData = true;
-        renderProducts();
-        runtime.updateTimestamp('menus-updated-at', savedAt);
+        return buckets;
     }
 
     async function loadMenus() {
-        if (loading) return;
-        loading = true;
-        results.setAttribute('aria-busy', 'true');
-        retry.hidden = true;
-        setStatus(hasData ? '保存済みの商品を表示しています。最新の情報を確認中です。' : '商品一覧を読み込み中です。');
         try {
-            const list = await runtime.fetchJson(config.api.menus);
-            acceptData(list, new Date().toISOString());
-            runtime.setCache(config.storageKeys.menusCache, list);
-            setStatus('');
+            const response = await fetch(MENUS_API_URL);
+
+            if (!response.ok) {
+                throw new Error(`Request failed: ${response.status}`);
+            }
+
+            const list = await response.json();
+
+            if (!isMenuList(list)) {
+                throw new Error('Unexpected payload');
+            }
+
+            const buckets = createMenuBuckets(list);
+            siteRuntime.setCache(MENU_CACHE_KEY, list);
+            CATEGORY_ORDER.forEach(function (category) {
+                renderCategory(category, buckets[category]);
+            });
+            siteRuntime.updateTimestamp('menus-updated-at', new Date().toISOString());
         } catch (error) {
-            runtime.recordClientEvent('menus_fetch_failed', { message: error.message });
-            setStatus(hasData ? config.messages.menusFallback : config.messages.menusError,
-                hasData ? 'fallback-message' : 'error-message');
-            retry.hidden = false;
-        } finally {
-            loading = false;
-            results.setAttribute('aria-busy', 'false');
+            console.error('Failed to load menu data.', error);
+            siteRuntime.recordClientEvent('menus_fetch_failed', {
+                message: error && error.message ? error.message : 'Unknown error',
+            });
+
+            const cached = siteRuntime.getCache(MENU_CACHE_KEY);
+
+            if (cached && isMenuList(cached.payload)) {
+                const buckets = createMenuBuckets(cached.payload);
+                const notice = `<p class="fallback-message">${escapeHtml(siteConfig.messages.menusFallback)}</p>`;
+
+                CATEGORY_ORDER.forEach(function (category) {
+                    const container = document.getElementById(category);
+                    if (container) {
+                        container.innerHTML = notice + buckets[category].join('');
+                    }
+                });
+                siteRuntime.updateTimestamp('menus-updated-at', cached.savedAt);
+                return;
+            }
+
+            CATEGORY_ORDER.forEach(function (category) {
+                const container = document.getElementById(category);
+                if (container) {
+                    container.innerHTML = `<p class="error-message">${escapeHtml(siteConfig.messages.menusError)}</p>`;
+                }
+            });
         }
     }
 
-    const groups = [...new Set(config.categories.map(function (category) { return category.group; }))];
-    groups.forEach(function (group) {
-        const optgroup = document.createElement('optgroup');
-        optgroup.label = group;
-        config.categories.filter(function (category) { return category.group === group; }).forEach(function (category) {
-            const option = document.createElement('option');
-            option.value = category.id;
-            option.textContent = category.label;
-            optgroup.appendChild(option);
-        });
-        categoryFilter.appendChild(optgroup);
-    });
-    form.addEventListener('submit', function (event) { event.preventDefault(); });
-    search.addEventListener('input', function (event) { if (!event.isComposing) renderProducts(); });
-    search.addEventListener('compositionend', renderProducts);
-    categoryFilter.addEventListener('change', renderProducts);
-    stockFilter.addEventListener('change', renderProducts);
-    function resetFilters() {
-        form.reset();
-        renderProducts();
-    }
-    document.getElementById('product-reset').addEventListener('click', resetFilters);
-    empty.querySelector('button').addEventListener('click', function () {
-        resetFilters();
-        search.focus();
-    });
-    document.querySelectorAll('[data-category]').forEach(function (link) {
-        link.addEventListener('click', function () {
-            form.reset();
-            categoryFilter.value = link.dataset.category;
-            renderProducts();
-        });
-    });
-    retry.addEventListener('click', loadMenus);
-    const cached = runtime.getCache(config.storageKeys.menusCache);
-    if (cached) {
-        try { acceptData(cached.payload, cached.savedAt); } catch (error) { /* Ignore unusable caches. */ }
-    }
     loadMenus();
 })();
