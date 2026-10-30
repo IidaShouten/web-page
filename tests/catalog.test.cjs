@@ -17,7 +17,7 @@ function node() {
 }
 
 function catalog(fetch, cached) {
-    const ids = ['product-filters', 'product-search', 'product-category', 'product-in-stock',
+    const ids = ['product-filters', 'product-search', 'product-search-disclosure', 'product-search-summary', 'product-category', 'product-in-stock',
         'menus-status', 'menus-retry', 'product-results', 'product-empty', 'product-count',
         'menus-updated-at', 'product-reset'];
     const nodes = Object.fromEntries(ids.map((id) => [id, node()]));
@@ -69,6 +69,8 @@ test('catalog combines normalized keyword, category and stock filters; clearing 
     nodes['product-search'].value = 'おきあみ l';
     nodes['product-search'].events.input({ isComposing: false });
     assert.equal(nodes['product-count'].textContent, '4点中 1点を表示');
+    assert.equal(nodes['product-search-summary'].textContent, '商品名で絞り込み中：おきあみ l');
+    assert.equal(nodes['product-reset'].hidden, false);
     nodes['product-category'].value = 'ダンゴ';
     nodes['product-category'].events.change();
     assert.equal(nodes['product-count'].textContent, '4点中 0点を表示');
@@ -80,6 +82,9 @@ test('catalog combines normalized keyword, category and stock filters; clearing 
     assert.equal(nodes['product-count'].textContent, '4点中 2点を表示');
     nodes['product-reset'].events.click();
     assert.equal(nodes['product-count'].textContent, '4点中 4点を表示');
+    assert.equal(nodes['product-search-disclosure'].open, false);
+    assert.equal(nodes['product-search-summary'].textContent, '商品名で探す');
+    assert.equal(nodes['product-reset'].hidden, true);
 });
 
 test('category navigation resets previous filters and image/detail actions stay separate', async () => {

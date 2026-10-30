@@ -279,19 +279,24 @@
                     <div class="container">
                         <div class="section-heading section-heading--left">
                             <h2 class="section-heading__title">エサを探す</h2>
-                            <p class="section-heading__description">商品名・エサの種類・メーカーから探せます。</p>
+                            <p class="section-heading__description">エサの種類・メーカー別に、価格と在庫をご覧いただけます。</p>
                         </div>
                         <form class="product-filters" id="product-filters" role="search" aria-label="商品を検索">
-                            <div class="filter-field filter-field--search">
-                                <label for="product-search">商品名・キーワード</label>
-                                <input id="product-search" type="search" placeholder="例：オキアミ、ダンゴ" autocomplete="off" />
+                            <div class="catalog-browse">
+                                <div class="filter-field filter-field--category">
+                                    <label for="product-category">種類・メーカー</label>
+                                    <select id="product-category"><option value="">すべてのカテゴリ</option></select>
+                                </div>
+                                <label class="filter-stock" for="product-in-stock"><input id="product-in-stock" type="checkbox" />在庫ありのみ</label>
+                                <button class="filter-reset" id="product-reset" type="button" hidden>条件をクリア</button>
                             </div>
-                            <div class="filter-field">
-                                <label for="product-category">種類・メーカー</label>
-                                <select id="product-category"><option value="">すべてのカテゴリ</option></select>
-                            </div>
-                            <label class="filter-stock" for="product-in-stock"><input id="product-in-stock" type="checkbox" />在庫ありのみ</label>
-                            <button class="filter-reset" id="product-reset" type="button">条件をクリア</button>
+                            <details class="catalog-search" id="product-search-disclosure">
+                                <summary id="product-search-summary">商品名で探す</summary>
+                                <div class="filter-field filter-field--search">
+                                    <label for="product-search">商品名・キーワード</label>
+                                    <input id="product-search" type="search" placeholder="例：オキアミ、ダンゴ" autocomplete="off" />
+                                </div>
+                            </details>
                         </form>
                         <div class="catalog-summary">
                             <p id="product-count" role="status" aria-atomic="true"></p>

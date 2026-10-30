@@ -4,6 +4,8 @@
     const escapeHtml = runtime.escapeHtml;
     const form = document.getElementById('product-filters');
     const search = document.getElementById('product-search');
+    const searchDisclosure = document.getElementById('product-search-disclosure');
+    const searchSummary = document.getElementById('product-search-summary');
     const categoryFilter = document.getElementById('product-category');
     const stockFilter = document.getElementById('product-in-stock');
     const status = document.getElementById('menus-status');
@@ -59,6 +61,9 @@
     }
 
     function renderProducts() {
+        const keyword = search.value.trim();
+        searchSummary.textContent = keyword ? `商品名で絞り込み中：${keyword}` : '商品名で探す';
+        document.getElementById('product-reset').hidden = !keyword && !categoryFilter.value && !stockFilter.checked;
         if (!hasData) return;
         const terms = runtime.normalizeSearchText(search.value).split(/\s+/).filter(Boolean);
         const filtered = products.filter(function (item) {
@@ -140,16 +145,18 @@
     stockFilter.addEventListener('change', renderProducts);
     function resetFilters() {
         form.reset();
+        searchDisclosure.open = false;
         renderProducts();
     }
     document.getElementById('product-reset').addEventListener('click', resetFilters);
     empty.querySelector('button').addEventListener('click', function () {
         resetFilters();
-        search.focus();
+        categoryFilter.focus();
     });
     document.querySelectorAll('[data-category]').forEach(function (link) {
         link.addEventListener('click', function () {
             form.reset();
+            searchDisclosure.open = false;
             categoryFilter.value = link.dataset.category;
             renderProducts();
         });
