@@ -39,7 +39,7 @@
         },
         storageKeys: {
             newsCache: 'miura-bait-shop-news-cache',
-            menusCache: 'miura-bait-shop-menus-cache',
+            menusCache: 'miura-bait-shop-menus-v2-cache',
             clientLogs: 'miura-bait-shop-client-logs',
         },
         observability: {

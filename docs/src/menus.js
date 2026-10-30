@@ -5,7 +5,7 @@
                 'https://script.google.com/macros/s/AKfycbyrCy6zydNo59xmisnkwkDsx4TIC6AY_LNhrzCpA-SZspYWe_cLwIWHEN0VmFnP5yls-w/exec',
         },
         storageKeys: {
-            menusCache: 'miura-bait-shop-menus-cache',
+            menusCache: 'miura-bait-shop-menus-v2-cache',
         },
         image: {
             productWidth: 300,
@@ -92,15 +92,42 @@
     function normalizeCategory(item) {
         const normalizedCategory = normalizeMenuText(item && item.category ? item.category : '');
 
-        if (!normalizedCategory || !NORMALIZED_CATEGORY_MAP[normalizedCategory]) {
+        if (!Object.prototype.hasOwnProperty.call(NORMALIZED_CATEGORY_MAP, normalizedCategory)) {
             return 'その他';
         }
 
         return NORMALIZED_CATEGORY_MAP[normalizedCategory];
     }
 
+    function safeUrl(value) {
+        if (typeof value !== 'string' || !value.trim()) {
+            return '';
+        }
+
+        try {
+            const url = new URL(value, window.location.href);
+            return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+        } catch (error) {
+            return '';
+        }
+    }
+
+    function isMenuList(value) {
+        return Array.isArray(value) && value.every(function (item) {
+            return item && typeof item === 'object' && !Array.isArray(item) &&
+                ['category', 'name', 'price', 'stock', 'url', 'img_url'].every(function (field) {
+                    return item[field] == null || ['string', 'number', 'boolean'].includes(typeof item[field]);
+                });
+        });
+    }
+
     function renderProductCard(item) {
-        const href = item.url && item.url.trim() !== '' ? item.url : item.img_url;
+        const imageUrl = safeUrl(item.img_url);
+        const href = safeUrl(item.url) || imageUrl;
+        const srcsetUrl = escapeHtml(imageUrl.replace(/,/g, '%2C'));
+        const imageAttributes = imageUrl
+            ? `src="${escapeHtml(imageUrl)}?w=300" srcset="${srcsetUrl}?w=300 1x, ${srcsetUrl}?w=600 2x"`
+            : '';
         const normalizedName = normalizeMenuText(item.name || '');
         const stockMarkup =
             item.stock === 'あり'
@@ -109,9 +136,8 @@
 
         return `<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
     <article class="product-card" itemscope itemtype="https://schema.org/Product" role="group" aria-label="${escapeHtml(normalizedName)}">
-        <a href="${escapeHtml(href)}" class="product-link">
-            <img src="${escapeHtml(item.img_url)}?w=300"
-                srcset="${escapeHtml(item.img_url)}?w=300 1x, ${escapeHtml(item.img_url)}?w=600 2x"
+        <a${href ? ` href="${escapeHtml(href)}"` : ''} class="product-link">
+            <img ${imageAttributes}
                 alt="${escapeHtml(normalizedName)}" loading="lazy" decoding="async" width="${siteConfig.image.productWidth}" height="${siteConfig.image.productHeight}">
             <h3 itemprop="name" class="product-name">${escapeHtml(normalizedName)}</h3>
             <h4 class="product-price">
@@ -139,9 +165,16 @@
         container.innerHTML = items.join('');
     }
 
-    async function loadMenus() {
+    function createMenuBuckets(list) {
         const buckets = createCategoryBuckets();
+        list.forEach(function (item) {
+            const category = normalizeCategory(item);
+            buckets[category].push(renderProductCard(item));
+        });
+        return buckets;
+    }
 
+    async function loadMenus() {
         try {
             const response = await fetch(MENUS_API_URL);
 
@@ -151,16 +184,12 @@
 
             const list = await response.json();
 
-            if (!Array.isArray(list)) {
+            if (!isMenuList(list)) {
                 throw new Error('Unexpected payload');
             }
 
-            list.forEach(function (item) {
-                const category = normalizeCategory(item);
-                buckets[category].push(renderProductCard(item));
-            });
-
-            siteRuntime.setCache(MENU_CACHE_KEY, buckets);
+            const buckets = createMenuBuckets(list);
+            siteRuntime.setCache(MENU_CACHE_KEY, list);
             CATEGORY_ORDER.forEach(function (category) {
                 renderCategory(category, buckets[category]);
             });
@@ -173,13 +202,14 @@
 
             const cached = siteRuntime.getCache(MENU_CACHE_KEY);
 
-            if (cached && cached.payload) {
+            if (cached && isMenuList(cached.payload)) {
+                const buckets = createMenuBuckets(cached.payload);
                 const notice = `<p class="fallback-message">${escapeHtml(siteConfig.messages.menusFallback)}</p>`;
 
                 CATEGORY_ORDER.forEach(function (category) {
                     const container = document.getElementById(category);
                     if (container) {
-                        container.innerHTML = notice + (cached.payload[category] || []).join('');
+                        container.innerHTML = notice + buckets[category].join('');
                     }
                 });
                 siteRuntime.updateTimestamp('menus-updated-at', cached.savedAt);
