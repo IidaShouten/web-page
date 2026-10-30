@@ -166,6 +166,7 @@
 .section-heading__description { margin: 12px 0 0; color: #485f64; }
 
 .section-heading__title {
+    text-wrap: balance;
     margin: 0;
     color: #142328;
     font-size: clamp(2.8rem, 3vw, 3.8rem);
@@ -402,12 +403,20 @@
 .product-stock.is-available { color: #165f4e; }
 .product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .product-filters { margin: 0; }
+.bait-guide { margin: 0 0 28px; max-width: 76ch; }
+.bait-guide details { border-bottom: 1px solid var(--site-line); }
+.bait-guide summary { display: list-item; min-height: 44px; padding: 12px 0; color: var(--site-teal); font-weight: 700; cursor: pointer; }
+.bait-guide summary:hover { text-decoration: underline; text-underline-offset: 4px; }
+.bait-guide p { margin: 0; padding: 0 0 16px; color: #485f64; line-height: 1.9; }
+.bait-guide .bait-guide__links { display: flex; flex-wrap: wrap; gap: 4px 24px; padding-bottom: 12px; }
+.bait-guide__links a { display: inline-flex; align-items: center; min-height: 44px; }
 .catalog-browse { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
 .filter-field { display: flex; flex-direction: column; gap: 6px; min-width: 180px; }
 .filter-field--category { flex: 1; max-width: 360px; }
 .filter-field--search { min-width: 0; padding-bottom: 8px; }
 .catalog-search { max-width: 520px; margin-top: 4px; }
 .catalog-search summary {
+    display: list-item;
     width: fit-content;
     max-width: 100%;
     min-height: 44px;

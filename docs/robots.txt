@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xn--p8je3b2frdvci4270g512e.com/sitemap.xml

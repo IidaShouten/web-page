@@ -1,10 +1,5 @@
 (function () {
     const SITE_CONFIG = {
-        siteName: 'みうらの釣りえさ屋',
-        siteUrl: 'https://xn--p8je3b2frdvci4270g512e.com/',
-        description:
-            '神奈川県三浦市で営業中の釣りエサ専門店。早朝営業、鮮度抜群のエサを取り揃えています。',
-        address: '神奈川県三浦市三崎5丁目12-3 THE OCEAN VIEW miura 2階',
         image: {
             productWidth: 300,
             productHeight: 300,
@@ -46,26 +41,6 @@
         observability: {
             logEndpoint: '',
             maxStoredLogs: 30,
-        },
-        seo: {
-            localBusiness: {
-                '@context': 'https://schema.org',
-                '@type': 'Store',
-                name: 'みうらの釣りえさ屋',
-                image: 'https://xn--p8je3b2frdvci4270g512e.com/icon.png',
-                url: 'https://xn--p8je3b2frdvci4270g512e.com/',
-                description:
-                    '神奈川県三浦市で営業中の釣りエサ専門店。早朝営業、鮮度抜群のエサを取り揃えています。',
-                address: {
-                    '@type': 'PostalAddress',
-                    addressCountry: 'JP',
-                    addressRegion: '神奈川県',
-                    addressLocality: '三浦市三崎',
-                    streetAddress: '5丁目12-3 THE OCEAN VIEW miura 2階',
-                },
-                areaServed: '神奈川県三浦市',
-                sameAs: ['http://www.miura-kaiou.com/'],
-            },
         },
     };
 
