@@ -1,6 +1,15 @@
 (function () {
     const config = window.SiteConfig;
     const runtime = window.SiteRuntime;
+    if (!config || !runtime) {
+        const message = document.getElementById('menus-status');
+        if (message) {
+            message.textContent = '商品一覧の準備ができませんでした。ページを再読み込みしてください。';
+            message.className = 'error-message';
+            message.hidden = false;
+        }
+        return;
+    }
     const escapeHtml = runtime.escapeHtml;
     const form = document.getElementById('product-filters');
     const search = document.getElementById('product-search');
@@ -95,8 +104,11 @@
     }
 
     function acceptData(list, savedAt) {
-        if (!Array.isArray(list) || list.some(function (item) {
-            return !item || typeof item !== 'object' || Array.isArray(item);
+        if (!Array.isArray(list) || !list.every(function (item) {
+            return item && typeof item === 'object' && !Array.isArray(item) &&
+                ['category', 'name', 'price', 'stock', 'url', 'img_url'].every(function (field) {
+                    return item[field] == null || ['string', 'number', 'boolean'].includes(typeof item[field]);
+                });
         })) throw new Error('Unexpected product data');
         products = list;
         hasData = true;
