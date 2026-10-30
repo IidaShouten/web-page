@@ -403,7 +403,8 @@
 .product-stock.is-available { color: #165f4e; }
 .product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .product-filters { margin: 0; }
-.bait-guide { margin: 0 0 28px; max-width: 76ch; }
+.faq-section { padding: 48px 0; }
+.bait-guide { max-width: 76ch; }
 .bait-guide details { border-bottom: 1px solid var(--site-line); }
 .bait-guide summary { display: list-item; min-height: 44px; padding: 12px 0; color: var(--site-teal); font-weight: 700; cursor: pointer; }
 .bait-guide summary:hover { text-decoration: underline; text-underline-offset: 4px; }
