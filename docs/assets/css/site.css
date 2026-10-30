@@ -163,8 +163,6 @@
     text-align: left;
 }
 
-.section-heading__description { margin: 12px 0 0; color: #485f64; }
-
 .section-heading__title {
     text-wrap: balance;
     margin: 0;
