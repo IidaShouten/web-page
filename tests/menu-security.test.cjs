@@ -17,8 +17,16 @@ const product = {
 async function loadMenus({ list = [product], offline = false, cache = {}, standalone = false } = {}) {
     const storage = new Map(Object.entries(cache));
     const elements = new Map();
+    const makeElement = () => ({
+        innerHTML: '', textContent: '', value: '', checked: false, hidden: false,
+        className: '', children: [],
+        setAttribute() {}, addEventListener() {}, focus() {}, reset() {},
+        appendChild(child) { this.children.push(child); },
+        closest() { return this; },
+        querySelector() { return makeElement(); },
+    });
     const element = (id) => {
-        if (!elements.has(id)) elements.set(id, { innerHTML: '', textContent: '' });
+        if (!elements.has(id)) elements.set(id, makeElement());
         return elements.get(id);
     };
     const context = {
@@ -29,10 +37,11 @@ async function loadMenus({ list = [product], offline = false, cache = {}, standa
                 setItem: (key, value) => storage.set(key, value),
             },
         },
-        document: { getElementById: element },
+        document: { getElementById: element, createElement: makeElement, querySelectorAll: () => [] },
         navigator: {},
         console: { error() {}, warn() {} },
         URL,
+        AbortController, setTimeout, clearTimeout,
         fetch: async () => {
             if (offline) throw new Error('Offline');
             return { ok: true, json: async () => list };
@@ -42,13 +51,13 @@ async function loadMenus({ list = [product], offline = false, cache = {}, standa
     if (!standalone) vm.runInContext(configSource, context);
     vm.runInContext(menuSource, context);
     await new Promise(setImmediate);
-    return { storage, html: element('その他').innerHTML };
+    return { storage, html: element('その他').innerHTML, status: element('menus-status') };
 }
 
 test('preserves normal product links and saves product data instead of HTML', async () => {
     const { html, storage } = await loadMenus();
     assert.match(html, /href="https:\/\/example\.test\/product"/);
-    assert.match(html, /src="https:\/\/example\.test\/photo\.png\?w=300"/);
+    assert.match(html, /src="https:\/\/example\.test\/photo\.png"/);
     assert.deepEqual(JSON.parse(storage.get(cacheKey)).payload, [product]);
     assert.equal(storage.has(oldCacheKey), false);
 });
@@ -74,23 +83,23 @@ test('uses a validated image URL as the fallback link', async () => {
     assert.match(relative.html, /href="https:\/\/example\.test\/product"/);
 });
 
-test('escapes product text and keeps image URL commas within srcset candidates', async () => {
+test('escapes product text and preserves commas in a single image URL', async () => {
     const { html } = await loadMenus({ list: [{
         ...product, name: '<img src=x onerror=alert(1)>', price: '<script>alert(1)</script>',
         img_url: 'https://example.test/a,b.png',
     }] });
     assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
     assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
-    assert.match(html, /srcset="https:\/\/example\.test\/a%2Cb\.png\?w=300 1x,/);
+    assert.match(html, /src="https:\/\/example\.test\/a,b\.png"/);
     assert.doesNotMatch(html, /<script>|<img src=x/);
 });
 
 test('validates URLs and escapes text again when displaying cached products offline', async () => {
     const item = { ...product, name: '<img src=x onerror=alert(1)>', url: 'javascript:alert(1)', img_url: '' };
-    const { html } = await loadMenus({ offline: true, cache: {
+    const { html, status } = await loadMenus({ offline: true, cache: {
         [cacheKey]: JSON.stringify({ savedAt: '2026-10-30T00:00:00Z', payload: [item] }),
     } });
-    assert.match(html, /fallback-message/);
+    assert.equal(status.className, 'fallback-message');
     assert.match(html, /class="product-card"/);
     assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
     assert.doesNotMatch(html, /\b(?:href|src|srcset)\s*="/);
@@ -101,13 +110,13 @@ test('does not restore legacy HTML caches or malformed cached records', async ()
     const legacy = await loadMenus({ offline: true, cache: {
         [oldCacheKey]: JSON.stringify({ payload: { その他: [markup] } }),
     } });
-    assert.match(legacy.html, /error-message/);
+    assert.equal(legacy.status.className, 'error-message');
     assert.doesNotMatch(legacy.html, /<img/);
     for (const payload of [{ その他: [markup] }, [markup], [null], [{ ...product, name: { toString: markup } }]]) {
-        const { html } = await loadMenus({ offline: true, cache: {
+        const { html, status } = await loadMenus({ offline: true, cache: {
             [cacheKey]: JSON.stringify({ payload }),
         } });
-        assert.match(html, /error-message/);
+        assert.equal(status.className, 'error-message');
         assert.doesNotMatch(html, /<img/);
     }
 });
@@ -120,10 +129,12 @@ test('treats prototype property names as unknown categories', async () => {
     }
 });
 
-test('also blocks unsafe URLs when the shared runtime is unavailable', async () => {
-    const { html } = await loadMenus({ standalone: true,
+test('fails safely with a recovery message when the shared runtime is unavailable', async () => {
+    const { html, status } = await loadMenus({ standalone: true,
         list: [{ ...product, url: 'javascript:alert(1)', img_url: 'javascript:alert(1)' }],
     });
-    assert.match(html, /class="product-card"/);
+    assert.equal(html, '');
+    assert.equal(status.className, 'error-message');
+    assert.match(status.textContent, /再読み込み/);
     assert.doesNotMatch(html, /\b(?:href|src|srcset)\s*="/);
 });
